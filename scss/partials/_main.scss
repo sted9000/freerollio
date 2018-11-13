@@ -1,0 +1,22 @@
+#main {
+    position: relative;
+    margin: 0 auto;
+    background-color: transparent;
+    max-width: 1024px;
+    min-width: 980px;
+}
+
+.overlay {
+    position: absolute;
+    z-index: 200;
+    background: $overlay-color;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+}
+
+body.error .overlay {
+    display: block;
+}

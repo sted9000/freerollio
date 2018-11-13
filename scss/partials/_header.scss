@@ -1,0 +1,53 @@
+#site-header {
+    width: 100%;
+    display: inline-block;
+    height: 240px;
+    text-align: right;
+    background-color: $primary-background;
+
+
+    a {
+        color: $text-color-header;
+        margin-left: 20px;
+        text-decoration: none;
+        padding: 20px;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 20px;
+
+        &:hover {
+            cursor: pointer;
+            color: $button-background-two;
+        }
+
+    }
+
+    h1.logo {
+        position: absolute;
+        left: 0;
+        width: 230px;
+        height: 50px;
+        margin-left: 0;
+        margin-top: 20;
+        text-align: left;
+        top: 30px;
+
+    }
+
+    #post-button-container {
+        width: 100%;
+        margin-top: 100px;
+        text-align: center;
+
+
+        #post-button {
+            width: 240px;
+            height: 60px;
+            background-color: $buttton-background-one;
+            color: $text-color;
+            padding: 2px;
+            border-radius: 8px;
+            line-height: 60px;
+        }
+    }
+}

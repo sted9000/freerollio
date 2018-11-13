@@ -1,0 +1,19 @@
+// Colors
+$primary-background: #fff;
+$text-color: #fff;
+$text-color-header: #202020;
+$a-tag-color: orange;
+$buttton-background-one: #202020; // dark gray
+$button-background-two: #585858; // normal gray
+$button-background-three: #808080; // light gray
+$button-background-four: #C0C0C0; // smoke gray
+
+// overlay
+$overlay-color: rgba(255,255,255,0.8);
+
+// mixins
+@mixin test-borders {
+    border-style: solid;
+    border-width: medium;
+    border-color: red;
+}

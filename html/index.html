@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OpenFreeroll</title>
+    <meta name="description" content="OpenFreeroll">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="../scripts/jquery-3.3.1.min.js"></script>
+    <script src="../scripts/web3.min.js"></script>
+    <script src="../js/web3_starter.js"></script>
+    <script src="../js/main.js"></script>
+
+</head>
+
+
+<body>
+    <div class="overlay"></div>
+    <!-- Error message for MetaMask detection  -->
+    <div id="primary-container">
+        <div class="error-bar">
+            <span class="error-label no-metamask-plugin">You need to <a href="https://metamask.io">install the MetaMask plugin</a> to use OpenFreeroll. </span>
+            <span class="error-label no-metamask-accounts">No accounts found. Please make sure MetaMask is unlocked then refresh the page.</span>
+            <span class="error-label invalid-network">Invalid network. Please switch to the Ropsten network.</span>
+        </div>
+    </div>
+
+
+
+    <div id="main">
+
+        <!-- Site header  -->
+        <header id="site-header">
+            <a id="how-it-works">How It Works</a>
+            <a id="docs">Documentation</a>
+            <h1 class="logo">
+                <a href="index.html">OpenFreeroll</a>
+            </h1>
+            <div id="post-button-container">
+                <a id="post-button" href="">Post a Freeroll</a>
+            </div>
+
+            <script type="text/javascript">
+                $("#post-button-container a").click(function() { // Any button
+                    console.log('here in post button');
+                    $('#post-freeroll').modal();
+                });
+            </script>
+
+        </header> <!-- END HEADER ------------------------------------------------------------------>
+
+        <!-- The Modals ---------------------------------------------------------------------------->
+
+
+
+
+
+
+
+        <!-- Search area -->
+        <div id="search-container" class="panel">
+
+            <!-- Search header -->
+            <div class="search-header" >
+
+                <!-- Main Filter -->
+                <div class="nav-bar">
+                    <ul class="main-nav">
+                        <li><a id="community-freerolls" class="selected">Community's Freerolls</a></li>
+                        <li><a id="user-freerolls">Your Freerolls</a></li>
+
+                    </ul>
+                    <script type="text/javascript">
+
+                        $(".main-nav a").click(function() { // Either button
+                            if ($(this).attr('class') != 'selected') { // If one that is unselected (only allowing switching not reloading
+
+                                if ($(this).attr('id') == "community-freerolls") { // If community-freerolls
+                                    window.location.hash = ''; // Clear hash
+                                    location.reload(); // Reload
+
+                                } else { // If user-freerolls
+                                    window.location.hash = '#' + $(this).attr('id') // Add hash
+                                    location.reload(); // Reload
+                                }
+                            }
+                        });
+
+                    </script>
+                </div>
+
+                <!-- Sub Filter -->
+                <div class"sub-bar">
+                    <ul class="sub-nav">
+                        <li><a id="latest" class="selected">Latest</a></li>
+                        <li><a id="completed">Completed</a></li>
+                        <li><a id="charity">Charity</a></li>
+                        <li><a id="evil-cause">Evil Cause</a></li>
+                    </ul>
+                    <script type="text/javascript">
+                        $(".sub-nav a").click(function() { // Any button
+                            if ($(this).attr("class") != "selected") { // If is not selected
+                                $('.sub-nav a').each(function(){ // Loop through each
+                                    $(this).removeClass("selected"); // Then remove selected class
+                                });
+                                $(this).addClass("selected"); // Add selected class
+                                changeSearch(); // Call 'backend'
+                            }
+                        });
+                    </script>
+                  </div>
+
+
+
+
+            </div> <!-- end search header ------------------------------------------------------------------------------------->
+
+            <!-- Search Results ----------------------------------------------------------------------------------------------->
+
+            <!-- communtity freerolls search display -->
+            <div id="community-freerolls" class="search-results">
+
+                <div class="search-results-list">
+                    <div id="query_results"></div>
+                    <div class="no-search-results hidden">
+                        <p>Currently no questions to show. Make sure Metamask is connected to the Ethereum network</p>
+                    </div>
+
+                    <div class="no-search-results-category hidden">
+                        <p>There are currently no freerolls in this category.</p>
+                    </div>
+
+                    <div class="no-more-results-category hidden">
+                        <p>Search complete. All displayed.</p>
+                    </div>
+
+                    <div id="spinningID" class="scanning-freerolls-category">
+                        <div class="spinner">
+                          <p>Scanning the Ethereum blockchain for freerolls...</p>
+                          <!-- Here realit.io has spinner  -->
+                        </div>
+                    </div>
+                </div> <!--  End search results list -->
+
+
+                <!-- load more results button (not working) and w/o css defined -->
+                <div class="loadmore-button">
+                    <span class="loadmore-text">Show More</span>
+                    <!-- <span class="loader"></span> -->
+                </div>
+                <script type="text/javascript">
+                    $("#community-freerolls .loadmore-button").click(function() { // Any button
+                        loadmoreButton();
+
+                    });
+                </script>
+
+            </div> <!-- end community freerolls search display -->
+
+
+            <!-- user-freerolls search display ----------------->
+            <div id="user-freerolls" class="search-results hidden">
+
+                <div class="search-results-list">
+                    <div class="no-search-results hidden">
+                        <p>Currently no questions to show. Make sure Metamask is connected to the Ethereum network</p>
+                    </div>
+
+                    <div class="no-search-results-category hidden">
+                        <p>There are currently no freerolls closing soon in this category.</p>
+                    </div>
+
+                    <div id="spinningID" class="scanning-freerolls-category">
+                        <div class="spinner">
+                          <p>Scanning the Ethereum blockchain for freerolls...</p>
+                          <!-- Here realit.io has spinner  -->
+                        </div>
+                    </div>
+                </div> <!--  End search results list -->
+
+
+                <!-- load more results button (not working) and w/o css defined -->
+                <div class="loadmore-button hidden" data-questions="freerolls-closing-soon">
+                    <span class="loadmore-text">Show More</span>
+                    <span class="loader"></span>
+                </div>
+
+            </div> <!-- end user-freerolls search display -->
+
+        </div> <!-- end search-container ------------------------------------------------------>
+
+    </div> <!-- end main ---------------------------------------------------------------------->
+
+
+
+
+
+
+    </div>
+
+
+
+    <footer id="site-footer">
+        <p>&copy slvrslugerstakingenterprises</p>
+    </footer>
+
+
+</body>

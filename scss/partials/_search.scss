@@ -1,0 +1,291 @@
+#search-container {
+    max-width: 1000px;
+    padding: 40px;
+    box-shadow: 1px 1px 10px rgba(0,0,0,.2);
+    margin: 100px auto 80px;
+    background-color: #fff;
+}
+
+// Big filters..................................................................
+.main-nav {
+    background-color: $buttton-background-one;
+    color: $text-color;
+    margin-left: -40px;
+    margin-right: -40px;
+    margin-top: -40px;
+
+    li {
+        display: inline-block;
+        list-style-type: none;
+        width: 49%;
+        text-align: center;
+
+        a {
+            display: block;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: $text-color;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.selected {
+                background-color: $button-background-two;
+            }
+        }
+    }
+}
+
+// Sub filters..................................................................
+.sub-nav {
+    background-color: $button-background-two;
+    color: $text-color;
+    margin-left: -40px;
+    margin-right: -40px;
+    margin-top: -16px;
+    margin-bottom: 0px;
+
+    li {
+        display: inline-block;
+        list-style-type: none;
+        width: 24%;
+        text-align: center;
+
+        a {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.selected {
+                background-color: $button-background-three;
+            }
+        }
+    }
+}
+
+// Search rankings .............................................................
+.rank-nav {
+    display: hidden;
+    background-color: $button-background-three;
+    color: $text-color;
+    margin-left: -40px;
+    margin-right: -40px;
+
+
+    li {
+        display: hidden;
+        list-style-type: none;
+        width: 16%;
+        text-align: center;
+
+        a {
+            display: block;
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 6px;
+            font-weight: bold;
+
+            &.selected {
+                background-color: $button-background-four;
+            }
+        }
+    }
+}
+
+// Search results...............................................................
+.hidden {
+    display: none;
+}
+
+// Error messages.......
+.no-search-results {
+
+    text-align: center;
+    margin-bottom: -20px;
+    padding: 20px 20px 0px;
+    background: #fff;
+    border-radius: 4px;
+    color: #999;
+}
+
+.no-search-results-category {
+
+    text-align: center;
+    margin-bottom: -20px;
+    padding: 20px 20px 0px;
+    background: #fff;
+    border-radius: 4px;
+    color: #999;
+}
+
+.no-more-results-category {
+
+    text-align: center;
+    margin-bottom: -20px;
+    padding: 20px 20px 0px;
+    background: #fff;
+    border-radius: 4px;
+    color: #999;
+}
+// Spinner......
+.spinner {
+  margin: 40px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  color: blue;
+  text-align: center;
+
+  p {
+      position: absolute;
+      width: 360px;
+      display: block;
+      left: -140px;
+      font-size: 14px;
+      top: 6px;
+      text-align: center;
+  }
+}
+
+// Appended data for search results......
+.single-result-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 0 25px;
+    border-bottom: solid 1px #d9dde0;
+    display: block;
+    font-size: 16px; // should be inherited from body
+    font-weight: 400; // should be inherited from body
+    line-height: 1.15; // should be inherited from html
+
+    .search-result-inner {
+        padding: 0 27px 0 0;
+        position: relative;
+
+        .search-result-title-row {
+            display: inline-block;
+            text-decoration: none;
+            font-size: 1.6em;
+            font-family: Georgia, Times, "Times New Roman", serif;
+            font-weight: normal;
+            color: $button-background-two;
+            width: 100%;
+
+
+            .result-title {
+                padding-top: 10px;
+                overflow: hidden;
+                float: left;
+                margin-right: 0em;
+                padding-right: 1em;
+                display: inline-block;
+                max-width: 50%;
+
+                .tooltiptext {
+                    font-size: .5em;
+                    visibility: hidden;
+                    bottom: 105%;
+                    background-color: #fff;
+                    border-radius: 6px;
+                    border-width: medium;
+                    border-style: solid;
+                    border-color: black;
+                    margin-left: 0px;
+                    padding: 10px;
+
+                    /* Position the tooltip */
+                    position: absolute;
+                    z-index: 1;
+                }
+
+                &:hover .tooltiptext {
+                    visibility: visible;
+                }
+
+            }
+
+            .icon {
+                float: right;
+                margin: 0 15px;
+
+                div {
+                white-space: pre;
+                text-align: center;
+                }
+
+
+
+                .tooltiptext {
+                    font-size: .5em;
+                    visibility: hidden;
+                    bottom: 105%;
+                    background-color: #fff;
+                    border-radius: 6px;
+                    border-width: medium;
+                    border-style: solid;
+                    border-color: black;
+                    margin-left: -50px;
+                    padding: 10px;
+
+                    a {
+                        color: inherit;
+                    }
+
+                    /* Position the tooltip */
+                    position: absolute;
+                    z-index: 100;
+                }
+
+                &:hover .tooltiptext {
+                    visibility: visible;
+                }
+            }
+        }
+
+        .search-result-footer-row {
+            font-size: 13px;
+            color: #757b82;
+
+            .footer-poster {
+                float: left;
+            }
+
+            .footer-amount {
+                float: right;
+            }
+
+        }
+    }
+}
+
+#heart-img {
+    margin-right: -16px;
+}
+// Load-more
+.loadmore-button {
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+    margin: 40px auto 10px;
+    font-weight: 500;
+    color: white;
+    text-align: center;
+    background-color: blue;
+    box-shadow: 0 0 8px rgba(0,0,0,.2);
+    border-radius: 6px;
+    cursor: pointer;
+    display: none;
+}
+
+.loadmore-text {
+    display: block;
+}
