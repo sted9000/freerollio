@@ -1,26 +1,69 @@
-// Find connection; else throw error
-window.addEventListener('load', function() {
+window.addEventListener('load', async () => {
 
-  // First
-  // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-  if (typeof web3 === 'undefined') {
+    // First see you browser has a web3 injection
+    if (typeof web3 === 'undefined') {
 
-    // Throw error
-    $('body').addClass('error-no-metamask-plugin').addClass('error');
+        // If not throw error
+        $('body').addClass('error-no-metamask-plugin').addClass('error');
 
-  } else {
-      // Use Mist/MetaMask's provider
-      console.log('Web3 provider found');
-      web3 = new Web3(web3.currentProvider);
-  }
+    // If yes get the account access
+    } else {
+        // *** Pattern for sites which need account address access **************
+        // Modern dapp browsers...
+        if (window.ethereum) {
 
-    // Second
+            window.web3 = new Web3(ethereum);
+
+            try {
+                // Request account access if needed
+                await ethereum.enable();
+                var accountAddressNeeded = true;
+                checkNetwork(accountAddressNeeded);
+
+            } catch (error) {
+                // throw err message
+                $('body').addClass('error-no-account-access').addClass('error');
+            }
+        // Legacy dapp browsers...
+        } else if (window.web3) {
+            window.web3 = new Web3(web3.currentProvider);
+
+            // Call network check
+            var accountAddressNeeded = true;
+            checkNetwork(accountAddressNeeded);
+        }
+        //*************************************************************************
+
+        // *** Pattern for stites which do NOT need account address access ********
+        // if (window.ethereum) {
+        //     window.web3 = new Web3(ethereum);
+        //     var accountAddressNeeded = false
+        //     checkNetwork(accountAddressNeeded);
+        // }
+        // else if (window.web3) {
+        //     window.web3 = new Web3(web3.currentProvider);
+        //     checkNetwork(accountAddressNeeded);
+        // }
+
+        //**************************************************************************
+
+        // Non-dapp browsers... (no metamask plugin)
+        else {
+            $('body').addClass('error-no-metamask-plugin').addClass('error');
+        }
+    }
+});
+
+function checkNetwork(_accountAddressNeeded) {
+
     // Network check; else throw error
     web3.version.getNetwork((err, netId) => {
 
       switch (netId) {
         case "1":
           console.log('This is mainnet');
+          // Case account check
+          // accountCheck(_accountAddressNeeded);
           $('body').addClass('error-invalid-network').addClass('error');
           break
         case "2":
@@ -29,7 +72,8 @@ window.addEventListener('load', function() {
           break
         case "3":
           console.log('This is the ropsten test network.');
-          // Not throw error message and screen
+          accountCheck(_accountAddressNeeded);
+          // $('body').addClass('error-invalid-network').addClass('error');
           break
         case "4":
           console.log('This is the Rinkeby test network.');
@@ -43,49 +87,70 @@ window.addEventListener('load', function() {
           console.log('This is an unknown network.');
           $('body').addClass('error-invalid-network').addClass('error');
       }
+  });
+}
 
-       // Third
-       // User has an account
-       web3.eth.getAccounts((err, acc) => {
-           if (!err) {
+function accountCheck(_accountAddressNeeded) {
+    window.web3.eth.getAccounts((err, acc) => {
 
-               if (acc.length <= 0) {
-                   $('body').addClass('error-no-metamask-accounts').addClass('error');
-               } else {
-                   web3.eth.defaultAccount = web3.eth.accounts[0];
-                   console.log("Active account: " + web3.eth.defaultAccount);
+        if (!err) {
+            console.log('here in accountcheck');
+            console.log('accountAddressNeeded: ' + _accountAddressNeeded);
 
-                   // Fire first function
-                   newSearch();
-               }
+            if (_accountAddressNeeded) {
 
-         } else {
-             console.error(err);
-         }
-     });
-    });
-});
+                if (acc.length <= 0) {
+                    $('body').addClass('error-no-metamask-accounts').addClass('error');
+
+                } else {
+                    web3.eth.defaultAccount = web3.eth.accounts[0];
+                    console.log("Active account: " + web3.eth.defaultAccount);
+                    // Call set abi
+                    fireUponPageLoad();
+                }
+            }
+            else {
+                console.log('No account address needed');
+                fireUponPageLoad();
+            }
+
+       } else {
+          // Terribly wrong error message
+       }
+   });
+}
+
+
+
 
 // web3 opjects (factoryInstance and freerollABI)
-  var factoryABI = web3.eth.contract([
+var factoryABI = web3.eth.contract([
 	{
 		"constant": false,
 		"inputs": [
-			{
-				"name": "_first_receiver",
-				"type": "address"
-			},
-			{
-				"name": "_second_receiver",
-				"type": "address"
-			},
 			{
 				"name": "_descr",
 				"type": "string"
 			},
 			{
+				"name": "_receiver",
+				"type": "address"
+			},
+			{
+				"name": "_charity",
+				"type": "bool"
+			},
+			{
+				"name": "_category",
+				"type": "uint256"
+			},
+			{
 				"name": "_duration",
 				"type": "uint256"
+			},
+			{
+				"name": "_location",
+				"type": "string"
 			}
 		],
 		"name": "newFreeroll",
@@ -100,121 +165,79 @@ window.addEventListener('load', function() {
 		"type": "function"
 	},
 	{
+		"constant": true,
 		"inputs": [],
+		"name": "version",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_version",
+				"type": "uint256"
+			}
+		],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
 	{
-		"constant": true,
+		"anonymous": false,
 		"inputs": [
 			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "communityFreerolls",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "lenCommunityFreerolls",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_user_address",
-				"type": "address"
-			}
-		],
-		"name": "lenUserFreerolls",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
+				"indexed": true,
+				"name": "_poster",
 				"type": "address"
 			},
 			{
-				"name": "",
+				"indexed": false,
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "_value",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_charity",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"name": "_category",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_location",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "_duration",
 				"type": "uint256"
 			}
 		],
-		"name": "userFreerolls",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
+		"name": "FreerollLog",
+		"type": "event"
 	}
 ]);
 
-var factoryAddress = '0xa59136ca4f152e3c896da8c9aeda07c0ef72b3d3'; // Ropstein Testnet Factory Address
+var factoryAddress = '0x7949088B58158C631aAf341C677777D214589CC4'; // Ropstein Testnet Factory Address
 
 var factoryInstance = factoryABI.at(factoryAddress); // Connecting Factory ABI and Address
 
 var freerollABI = web3.eth.contract([
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "first_receiver",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "rebate_contstant",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
 	{
 		"constant": true,
 		"inputs": [],
@@ -223,20 +246,6 @@ var freerollABI = web3.eth.contract([
 			{
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "second_receiver",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
 			}
 		],
 		"payable": false,
@@ -267,20 +276,6 @@ var freerollABI = web3.eth.contract([
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "descr",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [],
 		"name": "posterLost",
@@ -290,22 +285,28 @@ var freerollABI = web3.eth.contract([
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "receiver",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"name": "_poster",
 				"type": "address"
 			},
 			{
-				"name": "_first_receiver",
+				"name": "_receiver",
 				"type": "address"
-			},
-			{
-				"name": "_second_receiver",
-				"type": "address"
-			},
-			{
-				"name": "_descr",
-				"type": "string"
 			},
 			{
 				"name": "_duration",

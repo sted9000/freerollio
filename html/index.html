@@ -3,205 +3,472 @@
 <head>
     <meta charset="utf-8">
     <title>OpenFreeroll</title>
-    <meta name="description" content="OpenFreeroll">
+    <meta name="description" content="freerollio">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-
     <script src="../scripts/jquery-3.3.1.min.js"></script>
     <script src="../scripts/web3.min.js"></script>
     <script src="../js/web3_starter.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="../js/newmain.js"></script>
 
 </head>
 
 
 <body>
-    <div class="overlay"></div>
-    <!-- Error message for MetaMask detection  -->
-    <div id="primary-container">
-        <div class="error-bar">
-            <span class="error-label no-metamask-plugin">You need to <a href="https://metamask.io">install the MetaMask plugin</a> to use OpenFreeroll. </span>
-            <span class="error-label no-metamask-accounts">No accounts found. Please make sure MetaMask is unlocked then refresh the page.</span>
-            <span class="error-label invalid-network">Invalid network. Please switch to the Ropsten network.</span>
-        </div>
-    </div>
 
 
+    <!-- Divs to wrap content for sticky footer format -->
+    <div class="content-outside">
+        <div class="content-inside">
 
-    <div id="main">
+            <div class="overlay"></div>
 
-        <!-- Site header  -->
-        <header id="site-header">
-            <a id="how-it-works">How It Works</a>
-            <a id="docs">Documentation</a>
-            <h1 class="logo">
-                <a href="index.html">OpenFreeroll</a>
-            </h1>
-            <div id="post-button-container">
-                <a id="post-button" href="">Post a Freeroll</a>
+            <!-- Error message for MetaMask detection  -->
+            <div id="primary-container">
+                <div class="error-bar">
+                    <span class="error-label no-metamask-plugin">You need to <a href="https://metamask.io">install the MetaMask plugin</a> to use OpenFreeroll. </span>
+                    <span class="error-label no-metamask-accounts">No accounts found. Please make sure MetaMask is unlocked then refresh the page.</span>
+                    <span class="error-label invalid-network">Invalid network. Please switch to the Ropsten network.</span>
+                </div>
             </div>
 
-            <script type="text/javascript">
-                $("#post-button-container a").click(function() { // Any button
-                    console.log('here in post button');
-                    $('#post-freeroll').modal();
-                });
-            </script>
+            <!-- Site header  -->
+            <header id="site-header">
 
-        </header> <!-- END HEADER ------------------------------------------------------------------>
-
-        <!-- The Modals ---------------------------------------------------------------------------->
-
-
-
-
-
-
-
-        <!-- Search area -->
-        <div id="search-container" class="panel">
-
-            <!-- Search header -->
-            <div class="search-header" >
-
-                <!-- Main Filter -->
-                <div class="nav-bar">
-                    <ul class="main-nav">
-                        <li><a id="community-freerolls" class="selected">Community's Freerolls</a></li>
-                        <li><a id="user-freerolls">Your Freerolls</a></li>
-
+                <!-- Nav menu -->
+                <button class="hamburger">&#9776;</button>
+                <button class="cross">&#735;</button>
+                <div class="nav-menu">
+                    <ul>
+                        <a href="https://freeroll.io/" target="_blank"><li>Home</li></a>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing" target="_blank"><li>Projects</li></a>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing" target="_blank"><li>Blog</li></a>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing" target="_blank"><li>Resources</li></a>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing" target="_blank"><li>About</li></a>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing" target="_blank"><li>Contact</li></a>
                     </ul>
-                    <script type="text/javascript">
-
-                        $(".main-nav a").click(function() { // Either button
-                            if ($(this).attr('class') != 'selected') { // If one that is unselected (only allowing switching not reloading
-
-                                if ($(this).attr('id') == "community-freerolls") { // If community-freerolls
-                                    window.location.hash = ''; // Clear hash
-                                    location.reload(); // Reload
-
-                                } else { // If user-freerolls
-                                    window.location.hash = '#' + $(this).attr('id') // Add hash
-                                    location.reload(); // Reload
-                                }
-                            }
-                        });
-
-                    </script>
-                </div>
-
-                <!-- Sub Filter -->
-                <div class"sub-bar">
-                    <ul class="sub-nav">
-                        <li><a id="latest" class="selected">Latest</a></li>
-                        <li><a id="completed">Completed</a></li>
-                        <li><a id="charity">Charity</a></li>
-                        <li><a id="evil-cause">Evil Cause</a></li>
-                    </ul>
-                    <script type="text/javascript">
-                        $(".sub-nav a").click(function() { // Any button
-                            if ($(this).attr("class") != "selected") { // If is not selected
-                                $('.sub-nav a').each(function(){ // Loop through each
-                                    $(this).removeClass("selected"); // Then remove selected class
-                                });
-                                $(this).addClass("selected"); // Add selected class
-                                changeSearch(); // Call 'backend'
-                            }
-                        });
-                    </script>
-                  </div>
-
-
-
-
-            </div> <!-- end search header ------------------------------------------------------------------------------------->
-
-            <!-- Search Results ----------------------------------------------------------------------------------------------->
-
-            <!-- communtity freerolls search display -->
-            <div id="community-freerolls" class="search-results">
-
-                <div class="search-results-list">
-                    <div id="query_results"></div>
-                    <div class="no-search-results hidden">
-                        <p>Currently no questions to show. Make sure Metamask is connected to the Ethereum network</p>
-                    </div>
-
-                    <div class="no-search-results-category hidden">
-                        <p>There are currently no freerolls in this category.</p>
-                    </div>
-
-                    <div class="no-more-results-category hidden">
-                        <p>Search complete. All displayed.</p>
-                    </div>
-
-                    <div id="spinningID" class="scanning-freerolls-category">
-                        <div class="spinner">
-                          <p>Scanning the Ethereum blockchain for freerolls...</p>
-                          <!-- Here realit.io has spinner  -->
-                        </div>
-                    </div>
-                </div> <!--  End search results list -->
-
-
-                <!-- load more results button (not working) and w/o css defined -->
-                <div class="loadmore-button">
-                    <span class="loadmore-text">Show More</span>
-                    <!-- <span class="loader"></span> -->
                 </div>
                 <script type="text/javascript">
-                    $("#community-freerolls .loadmore-button").click(function() { // Any button
-                        loadmoreButton();
-
+                    $(".hamburger").click(function() {
+                        $( ".nav-menu" ).slideToggle( "slow", function() {
+                            $( ".hamburger" ).hide();
+                            $( ".cross" ).show();
+                        });
+                    });
+                    $(".cross").click(function() {
+                        $( ".nav-menu" ).slideToggle( "slow", function() {
+                            $( ".cross" ).hide();
+                            $( ".hamburger" ).show();
+                        });
                     });
                 </script>
 
-            </div> <!-- end community freerolls search display -->
+                <!-- Title, subtitle, and quote -->
+                <div id="title-container">
+                    <h1 id="header-title">freerollio</h1>
+                    <h4 id="header-subtitle">&quot... the ability to follow ones own advice."</h4>
+                </div>
+            </header> <!-- End Header .....................................-->
 
 
-            <!-- user-freerolls search display ----------------->
-            <div id="user-freerolls" class="search-results hidden">
 
-                <div class="search-results-list">
-                    <div class="no-search-results hidden">
-                        <p>Currently no questions to show. Make sure Metamask is connected to the Ethereum network</p>
+            <!-- Pages main content (post and search) -->
+            <div id="content">
+
+                <div class="dropdown-container">
+                    <div class="button-container">
+                        <button class="dropdown-button" id="intro-button">Short Introduction</button>
                     </div>
 
-                    <div class="no-search-results-category hidden">
-                        <p>There are currently no freerolls closing soon in this category.</p>
+                    <div class="dropdown-content-container" id="intro-text-container">
+                        <p>
+                            &quotOn one level, wisdom is nothing more profound than the ability to follow ones own advice." - Sam Harris<br /><br />
+                            Freerolls area mechanism to increase incentives to follow your own advice by risking money.<br /><br />
+                            State your goal, set a deadline, and put your money where your mouth is. Then see what happens.<br />
+                        </p>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing"><button id="read-more-button" class="float-button">Read More</button></a>
+                        <a href="https://docs.google.com/document/d/1LC4iEhv-UvId96dd5hIZqdwVwjt9yxU2jxpmKqH4kfA/edit?usp=sharing"><button id="guide-button" class="float-button">Getting Started Guide</button></a>
+                        <div class="clear-float-div"></div>
                     </div>
+                    <script type="text/javascript">
+                        $("#intro-button").click(function() {
+                            $("#intro-text-container").slideToggle("slow");
 
-                    <div id="spinningID" class="scanning-freerolls-category">
-                        <div class="spinner">
-                          <p>Scanning the Ethereum blockchain for freerolls...</p>
-                          <!-- Here realit.io has spinner  -->
-                        </div>
-                    </div>
-                </div> <!--  End search results list -->
-
-
-                <!-- load more results button (not working) and w/o css defined -->
-                <div class="loadmore-button hidden" data-questions="freerolls-closing-soon">
-                    <span class="loadmore-text">Show More</span>
-                    <span class="loader"></span>
+                            if ($("#intro-button").text() == 'Short Introduction') {
+                                $("#intro-button").text("Close Introduction");
+                            } else {
+                                $("#intro-button").text("Short Introduction");
+                            }
+                        });
+                    </script>
                 </div>
 
-            </div> <!-- end user-freerolls search display -->
 
-        </div> <!-- end search-container ------------------------------------------------------>
+                <!-- Post section -->
+                <div id="post-challenge">
 
-    </div> <!-- end main ---------------------------------------------------------------------->
+                    <!-- Postbutton -->
+                    <div class="dropdown-container">
+
+                        <div class="button-container">
+                            <button class="dropdown-button" id="post-button">Post Freeroll</button>
+                        </div>
+
+                        <div class="dropdown-content-container" id="post-container">
+
+                            <!-- Title -->
+                            <p id="fantom-padding"></p>
+
+                            <h3 id="post-title">Create Your Freeroll</h3>
+
+                            <!-- Description (input string) -->
+                            <div id="description-container" class="user-input">
+                                <div class="post-info-title-container">Description:</div>
+                                <input type="text" id="user-description"
+                                    placeholder=" Description of my goal..."
+                                    size="35"/>
+                            </div>
+
+                            <!-- Receiver (dropdown) -->
+                            <div id="receiver-container" class="user-input">
+                                <div class="post-info-title-container">Receiver:</div>
+                                <select class="post-select" id="user-receiver">
+                                    <option value="" style="color:grey">Select a receiver</option>
+                                    <option value="0" style="color:black">Charity 1</option>
+                                    <option value="1" style="color:black">Charity 2</option>
+                                    <option value="2" style="color:black">Friend / Other</option>
+                                </select>
+                                <div class="post-info-input-container">
+                                    <input type="text" id="user-input-receiver"
+                                        placeholder=" Ethereum address of receiver"
+                                        size="35"/>
+                                </div>
+                            </div>
+
+                            <script>
+                            $("#user-receiver").change(function() {
+                                $("#user-receiver").css("color", "black");
+
+                                var val = $(this).val();
+                                if(val == '2') {
+                                    $("#user-input-receiver").slideToggle("slow");
+                                    console.log('here in friend');
+                                } else {
+                                    $("#user-input-receiver").hide();
+                                }
+                            });
+                            </script>
+                            <!-- Amount (input string) -->
+                            <div id="amount-container" class="user-input">
+                                <div class="post-info-title-container">Amount:</div>
+                                <div class="post-info-input-container">
+                                    <input type="text" id="user-description"
+                                        placeholder=" Wager amount in ETH"
+                                        size="35"/>
+                                </div>
+                            </div>
+
+                            <!-- Duration (input number) -->
+                            <div id="duration-container" class="user-input">
+                                <div class="post-info-title-container">Duration:</div>
+                                <div class="post-info-input-container">
+                                    <input type="text" id="user-duration"
+                                        placeholder=" Number of days to complete your goal"
+                                        size="35">
+                                </div>
+                            </div>
+
+
+                            <!-- Result Location (input string) -->
+                            <div id="results-container" class="user-input">
+                                <div class="post-info-title-container">Results Location:</div>
+                                <div class="post-info-input-container">
+                                    <input type="text" id="user-location"
+                                        placeholder=" www.exactUrlOfResults.com (optional)"
+                                        size="35">
+                                </div>
+                            </div>
+
+                            <!-- Category (dropdown) -->
+                            <div id="receiver-container" class="user-input">
+                                <div class="post-info-title-container">Category:</div>
+                                <select class="post-select" id="user-category">
+                                    <option value="" style="color:grey">Select a category</option>
+                                    <option value="0" style="color:black">Health</option>
+                                    <option value="1" style="color:black">New skill</option>
+                                    <option value="2" style="color:black">Work / School</option>
+                                    <option value="3" style="color:black">Other</option>
+                                </select>
+
+                                <script>
+                                $("#user-category").change(function() {
+                                    $("#user-category").css("color", "black");
+                                });
+                                </script>
+                            </div>
+
+
+
+                            <!-- Submit button -->
+                            <div id="review-container">
+                                <button>Review</button>
+                            </div>
+
+                            <div class="clear-float-div">
+
+
+                            <script type="text/javascript">
+                                $("#review-container button").click(function() {
+                                    generateReview();
+                                });
+                            </script>
+
+
+                        </div>
+
+                        </div>
+                        <script type="text/javascript">
+                            $("#post-button").click(function() {
+                                $("#post-container").slideToggle("slow");
+                            });
+                        </script>
+
+
+                    </div>
+
+                <!-- End post-challenge -->
+                </div>
+
+                <!-- Search  --------------------------------------------------->
+                <div id="search-container">
+
+                    <!-- Search Title -->
+                    <div class="search-title-container">
+                        <div class="title-container">
+                            <a>Community's Freerolls</a>
+                        </div>
+                        <div class="filter-link-container">
+                            <a class="filter-link" id="filter-link">Show Filter</a>
+                        </div>
+                    </div>
+
+                    <!-- Filter Dropdown -->
+                    <div class="dropdown-content-container" id="filter-container">
+
+                        <div class="filter-row">
+                            <div class="category">
+                                Status:
+                            </div>
+                            <div class="filter-button-container">
+                                <div class="filter-button-edge">
+                                    <div id="filter-active" class="filter-button-middle">
+                                        Active
+                                    </div>
+                                </div>
+                                <div class="filter-button-edge">
+                                    <div id="filter-expired" class="filter-button-middle">
+                                        Expired
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both;"/>
+
+                        <div class="filter-row">
+                            <div class="category">
+                                Poster:
+                            </div>
+                            <div class="filter-button-container">
+                                <div class="filter-button-edge">
+                                    <div id="filter-community" class="filter-button-middle">
+                                        Community
+                                    </div>
+                                </div>
+                                <div class="filter-button-edge">
+                                    <div id="filter-you" class="filter-button-middle">
+                                        You
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both;"/>
+
+                        <div class="filter-row">
+                            <div class="category">
+                                Value:
+                            </div>
+                            <div class="filter-button-container">
+                                <div class="filter-button-edge">
+                                    <div id="filter-low" class="filter-button-middle">
+                                        Low
+                                    </div>
+                                </div>
+                                <div class="filter-button-edge">
+                                    <div id="filter-high" class="filter-button-middle">
+                                        High
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both;"/>
+
+                        <div class="filter-row">
+                            <div class="receiver">
+                                Receiver:
+                            </div>
+                            <div class="filter-button-container">
+                                <div class="filter-button-edge">
+                                    <div id="filter-charity"class="filter-button-middle">
+                                        Charity
+                                    </div>
+                                </div>
+                                <div class="filter-button-edge">
+                                    <div id="filter-noncharity" class="filter-button-middle">
+                                        Other
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both;"/>
+
+                        <div class="filter-row">
+                            <div class="category">
+                                Category:
+                            </div>
+                            <div class="filter-button-container">
+                                <div class="filter-button-edge">
+                                    <div id="filter-health" class="filter-button-middle">
+                                        Health
+                                    </div>
+                                </div>
+                                <div class="filter-button-edge">
+                                    <div id="filter-newskill" class="filter-button-middle">
+                                        New Skill
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both;"/>
+                        <div class="filter-row">
+                            <div class="category">
+
+                            </div>
+                            <div class="filter-button-container">
+                                <div class="filter-button-edge">
+                                    <div id="filter-workschool" class="filter-button-middle">
+                                        Work / School
+                                    </div>
+                                </div>
+                                <div class="filter-button-edge">
+                                    <div id="filter-othercat" class="filter-button-middle">
+                                        Other
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both;"/>
+
+                    <script type="text/javascript">
+                        $(".filter-button-middle").click(function() { // Any button
+
+                            if ($(this).attr("class") == "filter-button-middle unselected") { // If is not selected
+                                console.log("here in selected");
+                                $(this).removeClass("unselected");
+                            } else {
+                                $(this).addClass("unselected"); // Add selected class
+                            }
+
+                            fireUponFilterChange();
+                        });
+                    </script>
+
+                    </div>
+
+                    <script type="text/javascript">
+                        $("#filter-link").click(function() {
+                            $("#filter-container").slideToggle("slow");
+
+                            if ($("#filter-link").text() == 'Show Filter') {
+                                $("#filter-link").text("Close Filter");
+                            } else {
+                                $("#filter-link").text("Show Filter");
+                            }
+                        });
+                    </script>
+
+                    <div id="query-results">
+
+                    </div>
+
+
+
+                </div> <!-- End search -->
+            </div> <!-- End content -->
+        </div> <!-- End content-inside -->
+    </div> <!-- End content-outside -->
+
+    <!-- The Modal -->
+    <!-- Content:
+        - Transaction hash (or freeroll contract address?) with link in the title
+        - Contarct address, Poster address, Date posted, Description, Category, Expiration, Receiver address,
+            Results location, method of trust
+        - Status of contract (active, expired and uncalled, expired and called, victorious)
+        - Payout and Claim Victory Buttons
+     -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-title">
+                <span onClick="closeModal()" class="close">&times;</span>
+                <h3>Freeroll Contract</h3>
+                <div class="transHash-container">
+                    <a href=""></a>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-load-message">
+                    Searching Blockchain for Contract Details
+                </div>
+                <div class="modal-body-data">
+                    <div id="modal-poster" class="modal-item">
+                            Poster: 139YFEDOEYG>YPP190oeYo3FOD1FOY3YOPPF
+                    </div>
+                    <div id="modal-dateposted" class="modal-item">
+                            Posted on: November 3541
+                    </div>
+                    <div id="modal-description" class="modal-item">
+                            Commits to doing ohuatno uhntaouhnoseah utoaeuhtnsaoeuthusaoutaoseh uaoteuh soaneuhansoeuhaosenhu s has ththtttht
+                    </div>
+                    <div id="modal-category" class="modal-item">
+                            I the catgory of learning a new skill
+                    </div>
+                    <div id="modal-expiration" class="modal-item">
+                            By this date
+                    </div>
+                    <div id="modal-receiver" class="modal-item">
+                            He will receive a full refund upon completion<br/>
+                            Otherwise forfitting the balnce to AUAOY3ID1EFOi}eoi}yio3
+                    </div>
+                    <div id="modal-location" class="modal-item">
+                            He will post verifiable results at www.trust.com
+                    </div>
+                    <div id="modal-trust" class="modal-item">
+                            Results will be determined using the honor system
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- End modal -->
 
 
 
 
 
-
-    </div>
-
-
-
-    <footer id="site-footer">
-        <p>&copy slvrslugerstakingenterprises</p>
+    <footer>
+        <a>&copy sted9000</a>
     </footer>
 
 
