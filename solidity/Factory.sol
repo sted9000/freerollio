@@ -44,6 +44,7 @@ contract Factory {
         uint256 _category,
         string _location,
         uint256 _duration
+        address _freeroll_addr
         );
 
 	constructor(uint256 _version) public {
@@ -71,7 +72,8 @@ contract Factory {
             _charity,
             _category,
             _location,
-            _duration
+            _duration,
+            c
             );
 
 		return c; // Returns new Freeroll contract address

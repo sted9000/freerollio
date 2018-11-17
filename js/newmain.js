@@ -41,7 +41,6 @@ function queryBlockchainLogs() {
         {fromBlock: end_block - blocks_per_search, toBlock: end_block});
     event_logs.get(function(err, event_query_result) { // Get events (callback)
         if (!err) {
-
             getTimeStamp(event_query_result); // Get timestamps of events
 
         } else {console.error(err);} // Log error
@@ -375,27 +374,43 @@ function fireUponModalClick(_this) {
     // Open the modal
     $(".modal").css('display', 'block');
 
-    // Get corresponding freeroll
-    var modal_transactionHash = '';
-    for (var i=0; i<logs_array_all.length; i++) {
-        if ($(_this).attr('id').substring(0,9) == logs_array_all[i][0].transactionHash.substring(0,9)) {
-            modal_transactionHash = logs_array_all[i][0].transactionHash;
+    // Get information for modal
+    var modal_txHash = '';
+    var modal_address = '';
+    for (var i=0; i<logs_array_all.length; i++) { // Loop all local events
+        if ($(_this).attr('id').substring(0,9) == logs_array_all[i][0].transactionHash.substring(0,9)) { // Get txHash that user clicked on
+            modal_txHash = logs_array_all[i][0].transactionHash;
+            modal_address = logs_array_all[i][0].args[_address];
+
+            // Call freeroll for recipient and status/balance
+            freerollInstance = freerollABI.at(modal_address);
+            freerollInstance.receiver.call(function(err,_receiver) {
+                if (!err) {
+                    web3.eth.getBalance(modal_address, function(err,_balance) {
+                        if (!err) {
+
+                            // Append modal divs w/ information
+                            $('.modal-address-container a').text(modal_address); // Address in title
+                            $('#modal-poster').text('Poster ' + logs_array_all[i][0].args['_poster']); // Poster
+                            $("#modal-dateposted").text('On the date of ' + logs_array_all[i][1]));
+                            $("#modal-description").text('Must accomplish ' + logs_array_all[i][0].args['_description']);
+                            $("#modal-category").text('In the category of ' + logs_array_all[i][0].args['_category']);
+                            $("#modal-expiration").text('By the date of: ' + (logs_array_all[i][0].args[_duration] + logs_array_all[i][1]));
+                            $("#modal-value").text('Or forfit the balance of ' + logs_array_all[i][0].args['_value']);
+                            $("#modal-receiver").text('To the receiver ' + logs_array_all[i][0].args['_receiver']);
+                            $("#modal-location").text('The poster agrees to verify this accomplish at this location: ' + logs_array_all[i][0].args['_location']);
+                            $("#modal-trust").text('And agrees to the system of: ' + 'honor');
+
+                            $(".modal-load-message").hide();
+                            $(".modal-body-data").show();
+                        }
+                        else {console.error(err);}
+                    });
+                }
+                else {console.error(err);}
+            });
         }
     }
-
-    // Append Modal header
-    $('.transHash-container a').text(modal_transactionHash);
-    console.log(modal_transactionHash);
-    web3.eth.getTransaction(modal_transactionHash, function(err,res) {
-        if (!err) {
-            console.log(res.to);
-        }
-    })
-    // Get all information from the freeroll contract (callback hell)
-
-
-    // Display
-
 }
 
 
