@@ -664,7 +664,7 @@ function fireUponReviewClick() {
     })
 
     // Gas prices
-    .then(fetch('https://www.ethgasstationapi.com/api/standard')
+    .then(fetch('https://www.ethgasstationapi.com/api/standard', { mode: 'no-cors'})
         .then(function(data){
             gasPrice = data;
         }))
