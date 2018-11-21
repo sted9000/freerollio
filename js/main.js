@@ -661,12 +661,14 @@ function fireUponReviewClick() {
     .then((resp) => resp.json())  // Turn into json data
     .then(function(data) { //
         ethPrice = data.result.ethusd;
+        console.log(ethPrice);
     })
 
     // Gas prices
-    .then(fetch('https://www.ethgasstationapi.com/api/standard')
+    .then(fetch('https://www.ethgasstationapi.com/api/standard', { mode: 'no-cors'})
         .then(function(data){
             gasPrice = data;
+            console.log(gasPrice);
         }))
 
     // .then(function(){
