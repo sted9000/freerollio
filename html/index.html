@@ -9,18 +9,15 @@
     <script src="../scripts/jquery-3.3.1.min.js"></script>
     <script src="../scripts/web3.min.js"></script>
     <script src="../js/web3_starter.js"></script>
-    <script src="../js/newmain.js"></script>
-
+    <script src="../js/main.js"></script>
 </head>
 
 
 <body>
 
-
     <!-- Divs to wrap content for sticky footer format -->
     <div class="content-outside">
         <div class="content-inside">
-
             <div class="overlay"></div>
 
             <!-- Error message for MetaMask detection  -->
@@ -71,10 +68,10 @@
             </header> <!-- End Header .....................................-->
 
 
-
             <!-- Pages main content (post and search) -->
             <div id="content">
 
+                <!-- Short Introduction -->
                 <div class="dropdown-container">
                     <div class="button-container">
                         <button class="dropdown-button" id="intro-button">Short Introduction</button>
@@ -103,141 +100,174 @@
                     </script>
                 </div>
 
+                <!-- Post Freeroll -->
+                <div class="dropdown-container">
 
-                <!-- Post section -->
-                <div id="post-challenge">
-
-                    <!-- Postbutton -->
-                    <div class="dropdown-container">
-
-                        <div class="button-container">
-                            <button class="dropdown-button" id="post-button">Post Freeroll</button>
-                        </div>
-
-                        <div class="dropdown-content-container" id="post-container">
-
-                            <!-- Title -->
-                            <p id="fantom-padding"></p>
-
-                            <h3 id="post-title">Create Your Freeroll</h3>
-
-                            <!-- Description (input string) -->
-                            <div id="description-container" class="user-input">
-                                <div class="post-info-title-container">Description:</div>
-                                <input type="text" id="user-description"
-                                    placeholder=" Description of my goal..."
-                                    size="35"/>
-                            </div>
-
-                            <!-- Receiver (dropdown) -->
-                            <div id="receiver-container" class="user-input">
-                                <div class="post-info-title-container">Receiver:</div>
-                                <select class="post-select" id="user-receiver">
-                                    <option value="" style="color:grey">Select a receiver</option>
-                                    <option value="0" style="color:black">Charity 1</option>
-                                    <option value="1" style="color:black">Charity 2</option>
-                                    <option value="2" style="color:black">Friend / Other</option>
-                                </select>
-                                <div class="post-info-input-container">
-                                    <input type="text" id="user-input-receiver"
-                                        placeholder=" Ethereum address of receiver"
-                                        size="35"/>
-                                </div>
-                            </div>
-
-                            <script>
-                            $("#user-receiver").change(function() {
-                                $("#user-receiver").css("color", "black");
-
-                                var val = $(this).val();
-                                if(val == '2') {
-                                    $("#user-input-receiver").slideToggle("slow");
-                                    console.log('here in friend');
-                                } else {
-                                    $("#user-input-receiver").hide();
-                                }
-                            });
-                            </script>
-                            <!-- Amount (input string) -->
-                            <div id="amount-container" class="user-input">
-                                <div class="post-info-title-container">Amount:</div>
-                                <div class="post-info-input-container">
-                                    <input type="text" id="user-description"
-                                        placeholder=" Wager amount in ETH"
-                                        size="35"/>
-                                </div>
-                            </div>
-
-                            <!-- Duration (input number) -->
-                            <div id="duration-container" class="user-input">
-                                <div class="post-info-title-container">Duration:</div>
-                                <div class="post-info-input-container">
-                                    <input type="text" id="user-duration"
-                                        placeholder=" Number of days to complete your goal"
-                                        size="35">
-                                </div>
-                            </div>
-
-
-                            <!-- Result Location (input string) -->
-                            <div id="results-container" class="user-input">
-                                <div class="post-info-title-container">Results Location:</div>
-                                <div class="post-info-input-container">
-                                    <input type="text" id="user-location"
-                                        placeholder=" www.exactUrlOfResults.com (optional)"
-                                        size="35">
-                                </div>
-                            </div>
-
-                            <!-- Category (dropdown) -->
-                            <div id="receiver-container" class="user-input">
-                                <div class="post-info-title-container">Category:</div>
-                                <select class="post-select" id="user-category">
-                                    <option value="" style="color:grey">Select a category</option>
-                                    <option value="0" style="color:black">Health</option>
-                                    <option value="1" style="color:black">New skill</option>
-                                    <option value="2" style="color:black">Work / School</option>
-                                    <option value="3" style="color:black">Other</option>
-                                </select>
-
-                                <script>
-                                $("#user-category").change(function() {
-                                    $("#user-category").css("color", "black");
-                                });
-                                </script>
-                            </div>
-
-
-
-                            <!-- Submit button -->
-                            <div id="review-container">
-                                <button>Review</button>
-                            </div>
-
-                            <div class="clear-float-div">
-
-
-                            <script type="text/javascript">
-                                $("#review-container button").click(function() {
-                                    generateReview();
-                                });
-                            </script>
-
-
-                        </div>
-
-                        </div>
+                    <!-- Button -->
+                    <div class="button-container">
+                        <button class="dropdown-button" id="post-button">Post Freeroll</button>
                         <script type="text/javascript">
                             $("#post-button").click(function() {
                                 $("#post-container").slideToggle("slow");
                             });
                         </script>
-
-
                     </div>
 
-                <!-- End post-challenge -->
+                    <!-- Post Content -->
+                    <div id="post-container" class="dropdown-content-container">
+                        <h3>Create Your Freeroll</h3>
+
+                        <!-- Description (input string) -->
+                        <div id="description-container" class="user-input">
+                            <div class="post-info-title-container">Description:</div>
+                            <input type="text" id="user-description"
+                                placeholder=" Description of my goal..."
+                                size="35"/>
+                        </div>
+
+                        <!-- Receiver (dropdown) -->
+                        <div id="receiver-container" class="user-input">
+                            <div class="post-info-title-container">Receiver:</div>
+                            <select class="post-select" id="user-receiver">
+                                <option value="" style="color:grey">Select a receiver</option>
+                                <option value="0" style="color:black">Charity 1</option>
+                                <option value="1" style="color:black">Charity 2</option>
+                                <option value="2" style="color:black">Friend / Other</option>
+                            </select>
+                            <div class="post-info-input-container">
+                                <input type="text" id="user-input-receiver"
+                                    placeholder=" Ethereum address of receiver"
+                                    size="35"/>
+                            </div>
+                        </div>
+                        <script>
+                        $("#user-receiver").change(function() {
+                            $("#user-receiver").css("color", "black");
+
+                            var val = $(this).val();
+                            if(val == '2') {
+                                $("#user-input-receiver").slideToggle("slow");
+                                console.log('here in friend');
+                            } else {
+                                $("#user-input-receiver").hide();
+                            }
+                        });
+                        </script>
+
+                        <!-- Amount (input string) -->
+                        <div id="amount-container" class="user-input">
+                            <div class="post-info-title-container">Amount:</div>
+                            <div class="post-info-input-container">
+                                <input type="text" id="user-amount-eth"
+                                    placeholder=" Wager amount in ETH"
+                                    size="35"/>
+                            </div>
+                        </div>
+
+                        <!-- Duration (input number) -->
+                        <div id="duration-container" class="user-input">
+                            <div class="post-info-title-container">Duration:</div>
+                            <div class="post-info-input-container">
+                                <input type="text" id="user-duration"
+                                    placeholder=" Number of days to complete your goal"
+                                    size="35">
+                            </div>
+                        </div>
+
+
+                        <!-- Result Location (input string) -->
+                        <div id="results-container" class="user-input">
+                            <div class="post-info-title-container">Results Location:</div>
+                            <div class="post-info-input-container">
+                                <input type="text" id="user-location"
+                                    placeholder=" www.exactUrlOfResults.com (optional)"
+                                    size="35">
+                            </div>
+                        </div>
+
+                        <!-- Category (dropdown) -->
+                        <div id="receiver-container" class="user-input">
+                            <div class="post-info-title-container">Category:</div>
+                            <select class="post-select" id="user-category">
+                                <option value="" style="color:grey">Select a category</option>
+                                <option value="0" style="color:black">Health</option>
+                                <option value="1" style="color:black">New skill</option>
+                                <option value="2" style="color:black">Work / School</option>
+                                <option value="3" style="color:black">Other</option>
+                            </select>
+
+                            <script>
+                            $("#user-category").change(function() {
+                                $("#user-category").css("color", "black");
+                            });
+                            </script>
+                        </div>
+
+                        <!-- Review button -->
+                        <div><button id="review-container-button" onclick="fireUponReviewClick()">Review</button></div>
+                    <!-- End post container -->
+                    </div>
+                <!-- End Dropdown container -->
                 </div>
+
+                    <!-- Review Content -->
+                    <div id="review-modal" class="modal">
+
+                        <!-- Modal content -->
+                        <div id="review-modal-content" class="modal-content content-right">
+                            <div class="modal-title">
+                                <span onClick="closeModal()" class="close">&times;</span>
+                                <h3>Review Freeroll Contract</h3>
+                                <a id="review-subtitle" class="modal-sub-header-a" href="">Address TBD</a>
+
+
+
+                            </div>
+                            <div id="review-body" class="modal-body">
+
+                                <div id="review-body-data" class="modal-body-data">
+                                    <div class="modal-item"><span><p>You, owner of ethereum account at address:&nbsp;</p><a id="review-poster"></a></span></div>
+                                    <div class="modal-item"><span><p>Must accomplish the following:&nbsp;</p><p id="review-description" class="vital-content"></p></span></div>
+                                    <div class="modal-item"><span><p>Within:&nbsp;</p><p id="review-duration" class="vital-content"></p><p>of the contract creation (starting upon contracts submittal).</p></span></div>
+                                    <div class="modal-item"><span><p>Or the entire balance of the contract:&nbsp;</p><p id="review-amount" class="vital-content"></p></span></div>
+                                    <div class="modal-item"><span><p>Will transfer rights to the freeroll receiver you specified:&nbsp;</p><a id="review-receiver" class="vital-content"></a></span></div>
+                                    <div class="modal-item"><span><p id="review-location-mess"></p><a id="review-location" class="vital-content"></a></span></div>
+                                    <div class="modal-item"><span><p>You agree to act in accordance to the system of:&nbsp;</p><p id="review-trust" class="vital-content"></p></span></div>
+
+                                    <div class="modal-body-border"></div>
+
+                                    <div id="review-load-message" class="load-message">
+                                        <p>Retreiving Blockchain Information...</p>
+                                        <div class="spinner"></div>
+                                    </div>
+
+                                    <div id="blockchain-review-information" style="display:none">
+
+                                        <select class="post-select" id="gas-price" onchange="populateEstimates(this)">
+                                            <option value="" style="color:grey">Select Gas Price</option>
+                                            <option value="low" style="color:black">Low (<30min)</option>
+                                            <option value="standard" style="color:black">Standard (<5min)</option>
+                                            <option value="high" style="color:black">High (<2min)</option>
+                                        </select>
+
+                                        <div class="modal-item"><span><p>Estimated Freeroll Deadline:&nbsp;</p><p id="modal-est-deadline" class="vital-content"></p></span></div>
+                                        <div class="modal-item"><span><p>Estimated Deployment Cost:&nbsp;</p><p id="modal-deploy-cost" class="vital-content"></p></span></div>
+                                        <div class="modal-item"><span><p>Estimated Claim Victory Cost:&nbsp;</p><p id="modal-claim-cost" class="vital-content"></p></span></div>
+                                        <div class="modal-body-border"></div>
+
+                                        <div class="modal-button-container">
+                                            <button id="cancel-post" class="valid-button" onClick="closeModal()">Cancel</button>
+                                            <button id="submit-post" class="valid-button">Submit</button>
+                                            <div class="clear-float-div"></div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div> <!-- End review-body-data -->
+                            </div>
+                        </div>
+                </div> <!-- End Review Modal -->
 
                 <!-- Search  --------------------------------------------------->
                 <div id="search-container">
@@ -245,7 +275,7 @@
                     <!-- Search Title -->
                     <div class="search-title-container">
                         <div class="title-container">
-                            <a>Community's Freerolls</a>
+                            <div>Community's Freerolls</div>
                         </div>
                         <div class="filter-link-container">
                             <a class="filter-link" id="filter-link">Show Filter</a>
@@ -396,9 +426,25 @@
                         });
                     </script>
 
-                    <div id="query-results">
+                    <div class="log-results-container">
 
+                        <div id="query-results"></div>
+
+                        <div id="no-more-results-category"> <!-- Hidden by default -->
+                            <p class="search-complete">Search complete</p>
+                        </div>
+
+                        <div id="searching-blockchain"> <!-- Shown by default -->
+                              <p>Scanning the Ethereum blockchain for freerolls...</p>
+                              <div class="spinner"></div>
+                        </div>
+
+                        <div id="loadmore-button-container"> <!-- Hidden by default -->
+                            <a class="loadmore-link" onclick="loadmoreButton()">Load more</a>
+                        </div>
                     </div>
+
+
 
 
 
@@ -415,32 +461,48 @@
         - Status of contract (active, expired and uncalled, expired and called, victorious)
         - Payout and Claim Victory Buttons
      -->
-    <div id="myModal" class="modal">
+    <div id="details-modal" class="modal">
 
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content content-left">
             <div class="modal-title">
                 <span onClick="closeModal()" class="close">&times;</span>
                 <h3>Freeroll Contract</h3>
-                <div class="modal-address-container">
-                    <a href=""></a>
+                <div id="details-address-container">
+                    <a id="details-sub-header" class="modal-sub-header-a" href=""></a>
                 </div>
+
+
             </div>
 
             <div class="modal-body">
-                <div class="modal-load-message">
-                    Searching Blockchain for Contract Details ...
+                <div id="modal-load-message" class="load-message">
+                    <p>Searching Blockchain for Contract Details ...</p>
+                    <div class="spinner"></div>
                 </div>
-                <div class="modal-body-data">
-                    <div id="modal-poster" class="modal-item"></div>
-                    <div id="modal-dateposted" class="modal-item"></div>
-                    <div id="modal-description" class="modal-item"></div>
-                    <div id="modal-category" class="modal-item"></div>
-                    <div id="modal-expiration" class="modal-item"></div>
-                    <div id="modal-value" class="modal-item"></div>
-                    <div id="modal-receiver" class="modal-item"></div>
-                    <div id="modal-location" class="modal-item"></div>
-                    <div id="modal-trust" class="modal-item"></div>
+                <div id="details-body-data" class="modal-body-data">
+                    <div class="modal-item"><span><p>Freeroll poster:&nbsp;</p><a class="modal-poster"></a></span></div>
+                     <div class="modal-item"><span><p>Stated on the date of:&nbsp;</p><p id="modal-dateposted" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>That he must accomplish:&nbsp;</p><p id="modal-description" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>Within:&nbsp;</p><p id="modal-duration" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>By no later than:&nbsp;</p><p id="modal-expiration" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>Or forfit the entire balance of:&nbsp;</p><p id="modal-value" class="vital-content"></p></span></div>
+                    <div class="modal-item"><span><p>To the freeroll receiver:&nbsp;</p><a id="modal-receiver" class="vital-content"></a></span></div>
+                    <div class="modal-item"><span><p id="modal-location-avail">The poster agrees to verify this accomplish at:&nbsp;</p><a id="modal-location" class="vital-content"></a></span></div>
+                     <div class="modal-item"><span><p>Poster has agreed to act in accordance to the system of:&nbsp;</p><p id="modal-trust" class="vital-content"></p></span></div>
+                    <div class="modal-body-border"></div>
+                     <div class="modal-item"><span><p>Freeroll Deadline:&nbsp;</p><p id="modal-deadline" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>Outcome:&nbsp;</p><p id="modal-outcome" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>Unpaid Balance:&nbsp;</p><p id="modal-remaining-balance" class="vital-content"></p></span></div>
+                    <div class="modal-body-border"></div>
+
+                    <div class="modal-button-container">
+                        <button id="claim-victory" class="valid-button"onClick="claimVictory()">Claim Victory</button>
+                        <button id="claim-victory-grey" class="greyout-button">Claim Victory</button>
+                        <button id="payout" class="valid-button" onClick="payoutFreeroll()">Payout</button>
+                        <button id="payout-grey" class="greyout-button">Payout</button>
+                        <div class="clear-float-div"></div>
+                    </div>
                 </div>
 
             </div>

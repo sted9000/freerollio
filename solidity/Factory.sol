@@ -43,7 +43,7 @@ contract Factory {
         bool _charity,
         uint256 _category,
         string _location,
-        uint256 _duration
+        uint256 _duration,
         address _freeroll_addr
         );
 
@@ -122,17 +122,28 @@ contract Freeroll {
 - Gas used to deplay factory: 629168;
 - Address: 0x7949088B58158C631aAf341C677777D214589CC4;
 
+- Network: Ropsten
+- Version: 1;
+- Gas used to deplay factory: 663044;
+- Address: 0xF15CD8C7a4c7e28505519765a3470fc691D8D94E;
+- Block height: 4449994;
+
+
+
 First Freeroll:
-"The first freeroll on the ropsten test network Nov 14th", "0xAa6d662B5B7709F1A55F29A8FAEee549D0ad37ef", false, 0, 60, "tedslocum.com"
+"v2, The first freeroll on the ropsten test network Nov 14th", "0xAa6d662B5B7709F1A55F29A8FAEee549D0ad37ef", false, 0, 60, "tedslocum.com"
 Amount: .02 or .002 I forget
 - Gas used: 309193;
 - About 6cent per gwei
 - Address: 0xB64ECB450eF49287d67384A2Ca9f1FdF2944b683;
 
+
+
 Second freeroll: (long duration, charity, category 1,):
 "The second freeroll (long duration and charity)", "0xAa6d662B5B7709F1A55F29A8FAEee549D0ad37ef", true, 1, 31536000, "jonnyspicer.com"
 Amount: .03
 - Gas used: 309129
+
 
 
 
@@ -240,6 +251,11 @@ Factory abi:
 				"indexed": false,
 				"name": "_duration",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_freeroll_addr",
+				"type": "address"
 			}
 		],
 		"name": "FreerollLog",

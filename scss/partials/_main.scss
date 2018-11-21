@@ -1,13 +1,11 @@
-// This is contains all the shared formatting for the Open Freeroll Project
-// ...suite of sites
-
-
-// This formating is for the sticky footer .....................................
+// Layout .....................................
 html, body {
 font-family: 'Merriweather', serif;
   height: 100%;
   margin: 0;
 }
+
+// Layout for sticky footer
 .content-outside {
   min-height: 100%;
 }
@@ -16,24 +14,32 @@ font-family: 'Merriweather', serif;
   padding-bottom: 100px;
 }
 
+// Container for site content
+#content {margin-top: 50px;}
+
+
 // Defaults ........................................
-.clear-float-div {
-    clear: both;
-}
-a {
-	text-decoration: none; /* Removes the underline from the hyperlinked text */
+.clear-float-div {clear: both;}
+
+a, a:link, a:visited, a:focus, a:hover, a:active {
+    color: inherit;
+    text-decoration:none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 button {
     font-family: 'Merriweather', serif;
     cursor: pointer;
-    &:focus {
-        outline: 0;
-    }
+    border-radius: 2em;
 }
 
 // Colors ..................................................
 $grey-btn: #d9d9d9;
+
 
 // Mixins ....................................................
 @mixin tooltiptext {
@@ -51,484 +57,32 @@ $grey-btn: #d9d9d9;
     position: absolute; /* Position the tooltip ***Important***/
 }
 
-// Header .........................................
-#title-container {
+
+@mixin spinner {
+    margin: -10px auto 0;
+    border: 6px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 6px solid gray;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+.spinner {
+    @include spinner;
+}
+
+.load-message {
+    p {
     text-align: center;
-
-    #header-title {
-        margin: 50px auto 0;
-    }
-
-    #header-subtitle {
-        margin: 5px auto 0;
-    }
-}
-
-// Nav ..............................................
-.hamburger {
-    background:none;
-    position:absolute;
-    top:0;
-    right:0;
-    line-height:45px;
-    padding:5px 15px 0px 15px;
-    color: black;
-    border:0;
-    font-size:1.4em;
-    font-weight:bold;
-    cursor:pointer;
-    outline:none;
-    z-index:1;
-}
-
-.cross {
-    display: none;
-    background:none;
-    position:absolute;
-    top:0px;
-    right:0;
-    padding:7px 15px 0px 15px;
-    color:black;
-    border:0;
-    font-size:3em;
-    line-height:65px;
-    font-weight:bold;
-    cursor:pointer;
-    outline:none;
-    z-index:1;
-}
-
-.nav-menu {
-    z-index:1;
-    font-weight:bold;
-    font-size:0.8em;
-    width:100%;
-    background:#f5f5f5;
-    position:absolute;
-    top: 0px;
-    right: 40px;
-    width: 150px;
-    text-align:center;
-    display: none;
-    border-radius: 1em;
-
-    a {
-        text-decoration: none;
-        color: black;
-    }
-
-    ul {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-        list-style-image: none;
-
-
-        li {
-            display: block;
-            padding:15px 0 15px 0;
-
-            &:hover {
-                display: block;
-                background:#ffffff;
-                padding:15px 0 15px 0;
-                // border-bottom:#dddddd 1px solid;
-            }
-        }
-    }
-}
-
-// Introduction / Dropdown Div and Button ......................................
-.dropdown-container {
-	text-align: center;
-    margin-top: 10px;
-
-    .dropdown-button {
-        width: 250px;
-        background-color: black;
-        border: none;
-        color: white;
-        padding: 15px 25px;
-        box-shadow: 1px 1px 10px rgba(0,0,0,.2);
-        font-size: 1.1em;
-
-        &:hover {
-            background-color: white;
-            color: black;
-        }
-    }
-
-    .dropdown-content-container {
-        display: none;
-        max-width: 500px;
-        margin: 5px auto 5px;
-        box-shadow: 1px 1px 10px rgba(0,0,0,.2);
-        border-radius: 1em;
-
-        p {
-            padding: 10px;
-            margin: 0px;
-        }
-
-        .float-button {
-            background-color: $grey-btn;
-            color: black;
-            padding: 10px;
-            border-radius: 1em;
-            box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-            border-width: 0;
-            float: left;
-            width: 45%;
-            margin: 2.5%;
-
-            &:hover {
-                background-color: white;
-                color: black;
-            }
-        }
-    }
-}
-
-// Search ........................................................................
-#search-container {
-    max-width: 500px;
-    margin: 50px auto 80px;
-
-    .search-title-container {
-        max-width: 500px;
-        display: inline-block;
-        box-shadow: 1px 1px 10px rgba(0,0,0,.2);
-        border-radius: 2em;
-        background-color: black;
-        color: white;
-
-        .title-container {
-            width: 500px;
-            display: inline-block;
-            text-align: center;
-            font-size: 1.5em;
-            padding: 10px 0 5px;
-
-        }
-
-        .filter-link-container {
-            margin: 0;
-            width: 500px;
-            margin-bottom: 10px;
-            display: inline-block;
-            text-align: center;
-            font-size: .7em;
-            color: grey;
-            cursor: pointer;
-
-        }
-    }
-}
-
-#filter-container { // .dropdown-content-container
-    // display: none;
-    max-width: 500px;
-    margin: 5px auto 5px;
-    box-shadow: 1px 1px 10px rgba(0,0,0,.2);
-    border-radius: 2em;
     color: grey;
-    display: none;
-
-
-// Question here: why is the filter-row div not containing the children?
-    .filter-row {
-        width: 320px;
-        margin: 0 auto;
-        text-align: center;
-
-        .category, .receiver {
-            padding: 8px;
-            float:left;
-            text-align: left;
-            width: 65px;
-        }
-
-        .filter-button-edge {
-            background-color: white;
-            padding: 4px;
-            float: left;
-            width: 107.5px;
-
-            .filter-button-middle {
-                cursor: pointer;
-                background-color: white;
-                padding: 4px;
-                border-radius: 2em;
-                font-size: .8em;
-                color: grey;
-                border-style: solid;
-                border-color: grey;
-                border-width: 1px;
-
-                &.unselected {
-                    border-style: none;
-                    // border-color: grey;
-                    // border-width: 1px;
-                }
-            }
-        }
-    }
-}
-
-// Search results
-.single-result-container {
-    width: 500px;
-    padding: 10px 0 5px;
-    box-shadow: 1px 1px 10px rgba(0,0,0,.2);
-    border-radius: 2em;
-    border-bottom: solid 1px #d9dde0;
-    border-top: solid 1px #d9dde0;
-    display: inline-block;
-    position: relative;
-
-    &:hover {
-        padding: 20px 0 20px;
-    }
-
-    .tooltiptext {
-        color: grey;
-        font-size: .7em;
-        visibility: hidden;
-        top: 10px;
-        left: 101%;
-        background-color: #fff;
-        border-radius: 6px;
-        border-style: solid;
-        border-color: grey;
-        padding: 10px;
-        text-align: center;
-
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
-    }
-
-    &:hover .tooltiptext {
-        visibility: visible;
-    }
-
-    .search-result-title-row {
-        font-family: Georgia, Times, "Times New Roman", serif;
-        font-weight: normal;
-        color: black;
-        width: 100%;
-
-            .result-title {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                padding: 10px 0 0 10px;
-                display: inline-block;
-                max-width: 70%;
-            }
-
-            .icon {
-                float: right;
-                padding:  10px 10px 0;
-
-                div {
-                white-space: pre;
-                text-align: center;
-                }
-            }
-    }
-
-    .search-result-footer-row {
-        margin-top: -10px;
-        display: inline-block;
-        text-decoration: none;
-        font-size: .6em;
-        color: grey;
-
-        .status-footer {
-            float: left;
-            padding-left: 20px;
-        }
-    }
-}
-
-// Modal ..................................................
-/* The Modal (background) */
-.modal {
-   display: none; /* Hidden by default */
-   position: fixed; /* Stay in place */
-   z-index: 1; /* Sit on top */
-   left: 0;
-   top: 0;
-   width: 100%; /* Full width */
-   height: 100%; /* Full height */
-   overflow: auto; /* Enable scroll if needed */
-   background-color: rgb(0,0,0); /* Fallback color */
-   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-   background-color: #fefefe;
-   margin: 100px 30px 0; /* 15% from the top and centered */
-   padding: 20px;
-   border: 1px solid #888;
-   width: 400px; /* Could be more or less, depending on screen size */
-
-
-   .modal-title {
-       text-align: center;
-       border-bottom: 1px solid grey;
-       position: relative;
-       h3 {
-           margin-bottom: 5px;
-       }
-       .modal-address-container {
-           margin: 0 auto;
-           width: 70%;
-           white-space: nowrap;
-           overflow: hidden;
-           text-overflow: ellipsis;
-           font-size: .8em;
-           margin-bottom: 10px;
-
-          a {
-              text-decoration: none;
-          }
-
-       }
-   }
-
-   .modal-body {
-       padding: 10px;
-
-       .modal-load-message {
-           margin-top: 10px;
-           text-align: center;
-       }
-
-       .modal-body-data {
-
-           display: none;
-
-           .modal-item {
-               padding: 5px 0;
-           }
-       }
-   }
-}
-
-/* The Close Button */
-.close {
-   color: #aaa;
-   float: right;
-   font-size: 28px;
-   font-weight: bold;
-   margin-top: -30px;
-}
-
-.close:hover,
-.close:focus {
-   color: black;
-   text-decoration: none;
-   cursor: pointer;
-}
-
-
-// Footer .........................................
-footer {
-    height: 50px;
-    margin-top: -50px;
-    text-align: center;
-    a {
-        text-decoration: none;
-        color: grey;
+    font-size: 0.8em;
     }
 }
 
 
-
-.overlay {
-    position: absolute;
-    z-index: 2;
-    background: $overlay-color;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: none;
-}
-
-// Container for site content .......................
-#content {
-	margin-top: 50px;
-}
-
-// Default button format ...........................
-button {
-    border-radius: 2em;
-}
-
-
-
-// Modifications for post container
-#post-challenge {
-    fantom-padding {
-        padding: 5px;
-    }
-
-    #post-title {
-        margin-top: 0;
-        margin-bottom: 5px;
-        padding: 0;
-    }
-
-    .user-input {
-        margin: 10px;
-
-        .post-info-title-container {
-            padding: 0;
-        }
-
-        #user-input-receiver {
-            display: none;
-        }
-    }
-
-    .post-select {
-        width: 283.500px;
-        font: 400 13.3333px Arial;
-
-        // height: 18.5px;
-        padding: 1px 0;
-        color: grey;
-        padding: 1px 0;
-        border-width: 2px;
-        border-style: inset;
-        border-color: initial;
-        border-image: initial;
-        background-color: white;
-        font-family: 'Merriweather', serif;
-
-
-        &:focus {
-            outline: 0;
-        }
-    }
-
-      #review-container button {
-
-          margin: 2.5%;
-          padding: .8em;
-          border-radius: 1em;
-          border-width: 0;
-          width: 95%;
-          background-color: $grey-btn;
-          color: black;
-          box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-
-          &:hover {
-              background-color: white;
-          }
-    }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

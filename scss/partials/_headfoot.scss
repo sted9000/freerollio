@@ -1,0 +1,23 @@
+// Header .........................................
+#title-container {
+    text-align: center;
+
+    #header-title {
+        margin: 50px auto 0;
+    }
+
+    #header-subtitle {
+        margin: 5px auto 0;
+    }
+}
+
+// Footer .........................................
+footer {
+    height: 50px;
+    margin-top: -50px;
+    text-align: center;
+    a {
+        text-decoration: none;
+        color: grey;
+    }
+}

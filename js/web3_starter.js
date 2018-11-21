@@ -226,6 +226,11 @@ var factoryABI = web3.eth.contract([
 				"indexed": false,
 				"name": "_duration",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_freeroll_addr",
+				"type": "address"
 			}
 		],
 		"name": "FreerollLog",
@@ -233,7 +238,7 @@ var factoryABI = web3.eth.contract([
 	}
 ]);
 
-var factoryAddress = '0x7949088B58158C631aAf341C677777D214589CC4'; // Ropstein Testnet Factory Address
+var factoryAddress = '0xF15CD8C7a4c7e28505519765a3470fc691D8D94E'; // Ropstein Testnet Factory Address
 
 var factoryInstance = factoryABI.at(factoryAddress); // Connecting Factory ABI and Address
 
