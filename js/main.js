@@ -1,10 +1,14 @@
-// Parts of Main:
-// 1 - Search (6:388)
-// 2 - Modals (389:)
+// Contents:
+// 1 - Variables (11:31)
+// 2 - Blockchain search and Display Logic
+// 3 - Freeroll Details Modal
+// 4 - New Freeroll Review Modal
+// 5 - Button click and mics functions
 
 
-// *** Variables ***
-var blocks_per_search = 5000; // search area
+// *** Variables *******************************************************************************************************************************************
+// Search and display variables
+var blocks_per_search = 10000; // search area
 var done_search_switch = false; // flips when startblock has been reached
 var start_block = 4449994; // block of factory deployment
 var end_block = null; // block to search until
@@ -13,8 +17,21 @@ var logs_displayed = 0; // count of logs displayed
 var logs_array_all = []; // all logs
 var queue = null; // logs gathered but not displayed
 var timestamp_counter = 0;
+charity_list = ['0xc7464dbcA260A8faF033460622B23467Df5AEA42', '0xD3F81260a44A1df7A7269CF66Abd9c7e4f8CdcD1', '0x631bE4762a3d5c2fe2D9166e530F74AdDFCb1567']; // [GiveDirectly, Heifer International, My address]
+// Modal variables
+var proxy_url = 'https://cors-anywhere.herokuapp.com/';
+var ethPrice = null;
+var gasInfo = null;
+var web3_description = null;
+var web3_receiver = null;
+var web3_charity_bool = null;
+var web3_amount_wei = null;
+var web3_duration_sec = null;
+var web3_location = null;
+var web3_category = null;
 
 
+// *** Blockchain search and Display Logic *************************************************************************************************************
 // *** Gets block and starts search (called after web3 checks)
 function fireUponPageLoad() {
     console.log("Factory Address: " + factoryAddress); // Log
@@ -25,19 +42,20 @@ function fireUponPageLoad() {
     });
 }
 
-// STILL NEED TO TEST
+
 // *** Clears display and varibles upon user filter change
 function fireUponFilterChange() {
 
     $('.single-result-container').remove(); // Clear html display
     logs_displayed = 0; // Clear display counter
     queue = 0; // Clear queue
-    $('.loadmore-button-container').hide(); // Hide show more
+    $('#loadmore-button-container').hide(); // Hide show more
     $('.no-search-results-category').hide(); // Hide no results
     $('.no-more-results-category').hide(); // Hide no more results
 
     determineFilter(); // Continue process
 }
+
 
 // *** Call blockchain event log
 function queryBlockchainLogs() {
@@ -51,6 +69,7 @@ function queryBlockchainLogs() {
         } else {console.error(err);} // Log error
     });
 }
+
 
 // *** Call blockchain event log for timestamps
 // Note: Non-traditional 'loop function' (due to callbacks)
@@ -75,12 +94,16 @@ function getTimeStamp(_event_query_results) {
         timestamp_counter = 0; // Clear counter
         console.log('Events & Timestamps for end_blocks: ' + end_block);
         end_block = end_block - blocks_per_search; // Decrease search area
-        if (end_block < start_block) {done_search_switch = true;} // Flip switch
+        if (end_block < start_block) {
+            done_search_switch = true; // Flip switch
+            console.log('Done with events search');
+        }
         determineFilter(); // Continue process
     }
 }
 
-// *** Proesses users filters (calls filterLogs())
+
+// *** Proccesses search filters (calls filterLogs())
 function determineFilter() {
 
     var filters_array = [];
@@ -95,15 +118,22 @@ function determineFilter() {
              filters_array.push($(this).attr('id'));
         });
 
+        console.log(filters_array);
         filterLogs(filters_array); // pass filter_array to filterLogs()
     }
 }
 
+
+// *** Filters event arrays (passes 'passing' events to displayLogs())
 function filterLogs(_filter_array) {
 
     var filtered_logs = []; // Array to hold logs that meet filter criteria
+
     for (var i=0; i<logs_array_all.length; i++) { // Loop dataLogs
+        console.log('how many outerloops');
         for (var j=0; j<_filter_array.length; j++) { // Loop filters (unselected)
+            console.log('howmany inner loops')
+
 
             if (_filter_array[j] == "filter-active") { // The filter
                 var d = new Date(); // Create Date object
@@ -123,90 +153,89 @@ function filterLogs(_filter_array) {
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-community") {
-                console.log('user account: ' + web3.eth.defaultAccount);
-                console.log('poster account: ' + logs_array_all[i][0].args['_poster']);
+            else if (_filter_array[j] == "filter-community") {
                 if (logs_array_all[i][0].args['_poster'] == web3.eth.defaultAccount) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-you") {
+            else if (_filter_array[j] == "filter-you") {
                 if (logs_array_all[i][0].args['_poster'] != web3.eth.defaultAccount) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-high") {
+            else if (_filter_array[j] == "filter-high") {
                 if (web3.fromWei(logs_array_all[i][0].args['_value'].toNumber(), 'ether') < .5) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-low") {
+            else if (_filter_array[j] == "filter-low") {
             if (web3.fromWei(logs_array_all[i][0].args['_value'].toNumber(), 'ether') >= .5) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-charity") {
+            else if (_filter_array[j] == "filter-charity") {
                 if (logs_array_all[i][0].args['_charity'] == false) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-noncharity") {
+            else if (_filter_array[j] == "filter-noncharity") {
                 if (logs_array_all[i][0].args['_charity'] == true) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-health") {
-                if (logs_array_all[i][0].args['_categroy'].toNumber() != 0) {
+            else if (_filter_array[j] == "filter-health") {
+                if (logs_array_all[i][0].args['_category'].toNumber() != 0) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-newskill") {
+            else if (_filter_array[j] == "filter-newskill") {
                 if (logs_array_all[i][0].args['_category'].toNumber() != 1) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-workschool") {
+            else if (_filter_array[j] == "filter-workschool") {
                 if (logs_array_all[i][0].args['_category'].toNumber() != 2) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
 
-            else if (_filter_array[i] == "filter-othercat") {
+            else if (_filter_array[j] == "filter-othercat") {
                 if (logs_array_all[i][0].args['_category'].toNumber() != 3) {
                     if (j < (_filter_array.length - 1)) {continue;}
                     else {filtered_logs.push(logs_array_all[i]);}
                 } else {break;}
             }
+
         }
     }
 
     displayLogs(filtered_logs);
 }
 
+
 // *** Displays filtered_data
 // Note: Increments currently_displayed
-// Calls errorsAndMessages
+// Calls errorsAndMessages()
 function displayLogs(_logs_to_display) {
 
-
-    logs_to_display_now = _logs_to_display.slice(logs_displayed); // Removing the logs already displayed
+    var logs_to_display_now = _logs_to_display.slice(logs_displayed); // Removing the logs already displayed
     for (var i=0; i<logs_to_display_now.length; i++) { // Start loop
         if (logs_displayed < num_logs_to_display) { // Not over display 'max'
             var unique_id = logs_to_display_now[i][0].transactionHash.substring(0,9) // Create unique identifier
@@ -228,9 +257,6 @@ function displayLogs(_logs_to_display) {
                 class: 'search-result-title-row'
             }).appendTo('#' + unique_id);
 
-            // // Script
-            // $('#' + unique_id).append(
-            //     '<script type="text/javascript"></script>');
 
             // .result-title (_description)
             jQuery('<span/>', {
@@ -262,9 +288,8 @@ function displayLogs(_logs_to_display) {
                 $('#' + unique_id  + ' #status-span').append('Expired');
             }
 
-            // .icons *******************************
+            // .icons ********************
             // #location-span
-            console.log(logs_to_display_now[i][0].args);
             jQuery('<span/>', {
                 id: 'location-span',
                 class: 'icon'
@@ -339,58 +364,46 @@ function displayLogs(_logs_to_display) {
 
 }
 
+// *** Continue or cuts queryBlockchainLogs loop
+// Hides and Displays search messages
 function errorsAndMessages(_length_just_displayed) {
-    // Note #spinner is on by default on page load
 
     if (done_search_switch) {
 
         $('#searching-blockchain').hide(); // Hide searching
-        console.log('here in done, queue is: ' + queue);
+        // Note #spinner is on by default on page load
+
         if (queue > 0) { // Show loadmore button
             $('#loadmore-button-container').show();
-        } else { // Show no results
-            if (logs_displayed == null || logs_displayed == 0) {
-                $('.no-search-results-category').show(); // Show no results
-            } else {
-                $('.loadmore-button-container').hide(); // Hide show more
+        }
+        else if (logs_displayed == null || logs_displayed == 0) { // Show no results
+            $('#loadmore-button-container').hide(); // Hide show more
+            $('.no-search-results-category').show(); // Show no results
+        }
+        else {
+                $('#loadmore-button-container').hide(); // Hide show more
                 $('#no-more-results-category').show(); // Show no more results
             }
-        }
     } // End of query_done
 
-
-    // // Stop Loop due to user changing sub-nav filter
-    // if (stop_loop) {
-    //     $('.single-result-container').remove(); // Clear display
-    //     currently_displayed = 0; // Clear 'number_shown'
-    //     max_display = 5; // Set max display
-    //     queue = 0; // Clear queue
-    //     stop_loop = null; // Reset stop_loop
-    //     determineFilter(query_data); // Pass data to filter
-    //     return null // To stop the dataQuery loop
-    // }
-
-    // Continue the loop incrementing towards begining
     else {
         queryBlockchainLogs();
     }
 }
 
+
 // User requests to load more logs
 function loadmoreButton() {
-        num_logs_to_display += 5; // increment logs_to_display
+        num_logs_to_display += 4; // increment logs_to_display
         queue = 0; // clear queue
         determineFilter(); // run displayLogs()
-        $("#loadmore-button-container").hide(); // loadmore.hide()
 }
 
 
 // Modals **********************************************************************************************************************
 
 // Freeroll Detail Modal .........................................................
-function fireUponDetailsClick(_this) {
-    // Fire modal (with search message as default)
-    console.log('here in details');
+function fireUponDetailsClick(_this) { // Need this to know what freeroll was clicked
 
     // Open the modal
     $("#details-modal").css('display', 'block');
@@ -410,13 +423,13 @@ function fireUponDetailsClick(_this) {
 
                             // Append modal divs w/ information
                             $("#details-sub-header").text(modal_args['_freeroll_addr']); // Address in title
-                            $("#details-address-container").attr('id', modal_args['_freeroll_addr']); // Address as id for buttons
+                            $(".details-address-container").attr('id', modal_args['_freeroll_addr']); // Address as id for buttons
                             $("#details-sub-header").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_freeroll_addr'])); // Address etherscan
                             $("#details-sub-header").attr('target', '_blank'); // In new tab
-                            $(".modal-poster").text(modal_args['_poster']); // Add poster address
-                            $(".modal-poster").attr('id', modal_args['_poster']); // Add poster address
-                            $(".modal-poster").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_poster'])); // Poster etherscan
-                            $(".modal-poster").attr('target', '_blank'); // In new tab
+                            $("#modal-poster").text(modal_args['_poster']); // Add poster address
+                            $("#modal-poster").attr('id', modal_args['_poster']); // Add poster address
+                            $("#modal-poster").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_poster'])); // Poster etherscan
+                            $("#modal-poster").attr('target', '_blank'); // In new tab
 
                             var modal_start_object = new Date(modal_event[1] * 1000);
                             var modal_start_date = modal_start_object.toDateString();
@@ -450,7 +463,8 @@ function fireUponDetailsClick(_this) {
                                 $('#modal-location-avail').text('Poster has chosen not to verify results.')
                             }
                             else {
-                                $("#modal-location").text(modal_args['_location']); // Add location text
+                                $('#modal-location-avail').text('The poster agrees to verify this accomplish at:');
+                                $("#modal-location").text(' ' + modal_args['_location']); // Add location text
                                 $("#modal-location").attr('href', ('https://' + modal_args['_location'])); // Location href
                                 $("#modal-location").attr('target', '_blank'); // In new tab
                             }
@@ -465,7 +479,7 @@ function fireUponDetailsClick(_this) {
                                 if (web3.fromWei(balance, 'ether') == 0) { // Paid out winner (100%)
                                     $("#modal-deadline").text(' Passed');
                                     $("#modal-outcome").text(' Victory Claimed');
-                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether'));
+                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3));
                                     $("#claim-victory").hide();
                                     $("#payout").hide();
                                     $("#claim-victory-grey").show();
@@ -476,7 +490,7 @@ function fireUponDetailsClick(_this) {
                                 else if (balance == 1) { // Paid out receiver (all but 1 wei)
                                     $("#modal-deadline").text(' Passed');
                                     $("#modal-outcome").text(' Unsuccessful');
-                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether'));
+                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3));
                                     $("#claim-victory").hide();
                                     $("#payout").hide();
                                     $("#claim-victory-grey").show();
@@ -486,7 +500,8 @@ function fireUponDetailsClick(_this) {
                                 else {
                                     $("#modal-deadline").text(' Passed');
                                     $("#modal-outcome").text(' Unsucessful');
-                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether'));
+                                    // console.log(web3.fromWei(balance, 'ether').toNumber());
+                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether').toNumber().toFixed(2));
                                     $("#payout-grey").hide();
                                     $("#claim-victory").hide();
                                     $("#claim-victory-grey").show();
@@ -498,7 +513,7 @@ function fireUponDetailsClick(_this) {
                                 if (web3.fromWei(balance, 'ether') == 0) { // Paid out winner (100%)
                                     $("#modal-deadline").text(' Active');
                                     $("#modal-outcome").text(' Victory Claimed');
-                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether'));
+                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3));
                                     $("#claim-victory").hide();
                                     $("#payout").hide();
                                     $("#claim-victory-grey").show();
@@ -509,7 +524,7 @@ function fireUponDetailsClick(_this) {
                                 else {
                                     $("#modal-deadline").text(' Active'); // Ongoing
                                     $("#modal-outcome").text(' TBD');
-                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether'));
+                                    $("#modal-remaining-balance").text(' ' + 'NA');
                                     $("#payout").hide();
                                     $("#payout-grey").show();
 
@@ -521,14 +536,10 @@ function fireUponDetailsClick(_this) {
                                         $("#claim-victory").hide();
                                         $("#claim-victory-grey").show();
                                     }
-
-
-
-
                                 }
                             }
 
-                            $("#modal-load-message").hide();
+                            $("#details-load-message").hide();
                             $("#details-sub-header").show();
                             $("#details-body-data").show();
 
@@ -542,62 +553,181 @@ function fireUponDetailsClick(_this) {
     }
 }
 
+
+// *** Button in Details modal to payout freeroll after loss
 function payoutFreeroll() {
-    var vic_freeroll_addr = $(".modal-address-container").attr('id'); // get address
-    var freerollInstance = freerollABI.at(vic_freeroll_addr);
-    freerollInstance.posterLost(function(err,result) {
-        if (!err) {
-            console.log(result); // Transaction Hash
+    var vic_freeroll_addr = $(".details-address-container").attr('id'); // get address
+    var freerollInstance = freerollABI.at(vic_freeroll_addr); // Create web3 object
+    var payout_data = freerollInstance.posterLost.getData(); // Get data for transaction
+    web3.eth.sendTransaction({ // Send transaction
+        from: web3.eth.defaultAccount,
+        to: freerollInstance.address,
+        gas: 40000,
+        data: payout_data}, function(err, txHash) {
+
+            if (!err) {
+                console.log(txHash);
+            }
+            else {
+                console.error(err);
+            }
         }
-        else {
-            console.error(err);
-        }
-    });
+    );
 }
 
+
+// *** Button in Details modal to refund poster / winner before deadline
 function claimVictory() {
-    var vic_freeroll_addr = $(".modal-header-address").attr('id'); // get address
-    var vic_poster = $(".modal-poster").attr('id') // get poster address
-    var freerollInstance = freerollABI.at(vic_freeroll_addr);
-    freerollInstance.posterWon(function(err,result) {
-        if (!err) {
-            console.log(result); // Transaction Hash
+    var vic_freeroll_addr = $(".details-address-container").attr('id'); // get address
+    var freerollInstance = freerollABI.at(vic_freeroll_addr); // Create web3 object
+    var payout_data = freerollInstance.posterWon.getData(); // Get data for transaction
+    web3.eth.sendTransaction({ // Send transaction
+        from: web3.eth.defaultAccount,
+        to: freerollInstance.address,
+        gas: 40000,
+        data: payout_data}, function(err, txHash) {
+
+            if (!err) {
+                console.log(txHash);
+            }
+            else {
+                console.error(err);
+            }
         }
-        else {
-            console.error(err);
-        }
-    });
+    );
 }
 
-function closeModal() {
-    $(".modal").css('display', 'none');
-    $("#modal-load-message").show();
-    $("#review-load-message").show();
-    $("#details-body-data").hide();
-    $("#details-sub-header").hide();
-}
 
-// Review before posting Modal ...................................................
-/* Freeroll Detail Modal ***********************************************************************/
+
+// *** Review before posting Modal ...................................................
 function fireUponReviewClick() {
 
-    // // Make sure all inputs are filled
-    // if (($("#user-description").val() == "") ||
-    // ($("#user-receiver").val() == "") ||
-    // ($("#user-amount").val() == "") ||
-    // ($("#user-duration").val() == "") ||
-    // ($("#user-category").val() == "")) {
-    //     // error
-    //     alert('You missed required(s) field');
-    //     return;
-    // }
+    // Note bad use of fetch (lack of understanding of promises)
+    // ... could not get 'timing' right (some things were called before
+    // ... relevant varible were populated)
 
+    // Order of operations:
+    inputsFilled();
+    // checkFormats();
+    // populateModal()
+    // getEthPrice();
+    // getGasInfo();
+    // populateEstimates();
+}
+
+
+// *** Checks to see user has filled in all required inputs.
+// Calls (checkFormats())
+function inputsFilled() {
+
+    // Make sure all inputs are filled
+    if (($("#user-description").val() == "") ||
+    ($("#user-receiver").val() == "") ||
+    ($("#user-amount").val() == "") ||
+    ($("#user-duration").val() == "") ||
+    ($("#user-category").val() == "")) {
+        // error
+
+        alert('You missed required field(s)');
+        return
+    }
+    else {
+        checkFormats();
+    }
+}
+
+
+// *** Checks the format of user inputs and stores them globally
+// Calls populateModal()
+function checkFormats() {
+    // Descrition (string and less than 140)
+    if (typeof($("#user-description").val()) === 'string' & $("#user-description").val().length <= 140) {
+        web3_description = $("#user-description").val();
+    }
+    else {
+        alert('Your description is too long (over 140) or is not a string');
+        return
+    }
+
+    // Receiver (is valid address)
+    if ($("#user-receiver").val() == '3') {
+        if (web3.isAddress($("#user-input-receiver").val()) == true) {
+            web3_receiver = $("#user-receiver").val();
+            web3_charity_bool = false;
+        }
+        else {
+            alert('You have entered an invalid ethereum address for Freeroll Receiver');
+            return
+        }
+    }
+    else {
+        if (web3.isAddress(charity_list[parseInt($("#user-receiver").val())]) == true) {
+            web3_receiver = charity_list[parseInt($("#user-receiver").val())];
+            web3_charity_bool = true;
+        }
+        else {
+            alert('The ethereum address for the Freeroll Receiver is invalid');
+            return
+        }
+    }
+
+    // Amount (is number without decimal)
+    console.log($("#user-amount-eth").val());
+    try {
+        if (web3.toWei($("#user-amount-eth").val(), 'ether') % 1 == 0) {
+            web3_amount_wei = web3.toWei($("#user-amount-eth").val(), 'ether');
+        }
+        else {
+            alert('Invalid ETH amount');
+            return
+        }
+    }
+    catch (e) {
+        alert('Invalid ETH amount');
+        return
+    }
+
+    // Duration (is number without decimal)
+    console.log($("#user-duration").val());
+    var user_duration_num = parseFloat($("#user-duration").val());
+    console.log((user_duration_num * 60 * 60 * 24));
+    if ((user_duration_num * 60 * 60 * 24) >= 1) {
+        web3_duration_sec = Math.trunc(user_duration_num * 60 * 60 * 24);
+        console.log(web3_duration_sec);
+    }
+    else {
+        alert('Invalid duration');
+        return
+    }
+
+    // Results location (begining)
+    console.log($("#user-location").val());
+    // check the result string format
+    if ($("#user-location").val() == "") {
+        web3_location = "";
+    } else if ($("#user-location").val().startsWith('www.')) {
+        web3_location = $("#user-location").val().slice(4);
+    } else if ($("#user-location").val().startsWith('https://')) {
+        web3_location = $("#user-location").val().slice(8);
+    } else if ($("#user-location").val().startsWith('http://')) {
+        web3_location = $("#user-location").val().slice(7);
+    } else {
+        alert("Your result's location must start with www., http://, or https://");
+        return;
+    }
+
+
+    web3_category = parseInt($("#user-category").val());
+
+    populateModal();
+}
+
+
+// *** Appends the users inputs to the modal html
+// Calls getEthPrice()
+function populateModal() {
 
     $("#post-container").slideToggle("slow"); // Close post dropdown
-    $("#review-modal").show(); // Show the modal
-
-
-    // Populate Modal ..........................................................
 
     // Poster address
     $("#review-poster").text(web3.eth.defaultAccount); // Add poster address
@@ -605,12 +735,11 @@ function fireUponReviewClick() {
     $("#review-poster").attr('target', '_blank'); // In new tab
 
     // Freeroll description
-    console.log($("#user-description"));
-    $("#review-description").text($("#user-description").val()); // Add description
+    console.log(web3_description);
+    $("#review-description").text(web3_description); // Add description
 
     // Duration
-    var usr_dur_secs = ($("#user-duration").val() * 60 * 60 * 24);
-    var delta = Math.abs(usr_dur_secs); // get total seconds between the times
+    var delta = web3_duration_sec; // get total seconds between the times
     var days = Math.floor(delta / 86400); // calculate whole days
     delta -= days * 86400; // subtract
     var hours = Math.floor(delta / 3600) % 24; // calculate whole hours
@@ -620,29 +749,21 @@ function fireUponReviewClick() {
     var seconds = delta % 60;  // // what's left is seconds
     $("#review-duration").text(days + ' Days, ' + hours + ' Hours, ' + minutes + ' Minutes '); // Add duration
 
-    // Balance
-    $("#review-amount").text($("#user-amount-eth").val() + ' ETH'); // Add description
+    // Amount
+    $("#review-amount").text(web3.fromWei(web3_amount_wei, 'ether') + ' ETH'); // Add amount
 
     // Receiver
-    if ($("#user-receiver").val() == 2) {
-        $("#review-receiver").text($("#user-input-receiver").val()); // Add description
-        $("#review-receiver").attr('href', ("https://ropsten.etherscan.io/address/" + $("#user-input-receiver").val())); // Add description
-        $("#review-receiver").attr('target', '_blank'); // Add description
-    }
-    else {
-        // NEED TO ADD LOGIC FOR CHARITY ADDRESSES HERE
-        $("#review-receiver").text($("#user-receiver").val()); // Add description
-        $("#review-receiver").attr('href', ("https://ropsten.etherscan.io/address/" + $("#user-input-receiver").val())); // Add description
-        $("#review-receiver").attr('target', '_blank'); // Add description
-    }
+    $("#review-receiver").text(web3_receiver); // Add receiver
+    $("#review-receiver").attr('href', ("https://ropsten.etherscan.io/address/" + web3_receiver)); // Add etherscan
+    $("#review-receiver").attr('target', '_blank'); // In new tab
 
     // Location
     if ($("#user-location").val() == "") {
         $("#review-location-mess").text("You DO NOT intend to verify your results");
     }
     else {
-        $("#review-location-mess").text("You agree to verifiy your results at: ");
-        $("#review-location").text(' ' + $("#user-location").val());
+        $("#review-location-mess").text("You agree to verifiy your results at:");
+        $("#review-location").text(" " + web3_location);
     }
 
     // Trust system
@@ -651,69 +772,261 @@ function fireUponReviewClick() {
     // Show modal body
     $("#review-body-data").show();
 
+    // Show the modal
+    $("#review-modal").show();
 
-    // API promises ......................
-    var ethPrice = null;
-    var gasPrice = null;
+    getEthPrice()
+}
 
+
+// *** API call to etherscan to get ethereum price
+// Stores globally and calls getGasInfo
+function getEthPrice() {
     // Ethereum price
     fetch('https://api.etherscan.io/api?module=stats&action=ethprice&apikey=9NFYURHUKFZ46AIXCEKQRBYR727C5KFIW5')
     .then((resp) => resp.json())  // Turn into json data
     .then(function(data) { //
         ethPrice = data.result.ethusd;
-        console.log(ethPrice);
+        console.log('here in price api');
+        getGasInfo();
+
     })
-
-    // Gas prices
-    .then(fetch('https://www.ethgasstationapi.com/api/standard', { mode: 'no-cors'})
-        .then(function(data){
-            gasPrice = data;
-            console.log(gasPrice);
-        }))
-
-    // .then(function(){
-    //
-    //     // Estimated Freeroll Deadline
-    //     // var est_deadline = new Date((usr_dur_secs * 1000) + (Date.now()) + (60 * 1000));
-    //     // var est_deadline_date = est_deadline.toDateString();
-    //     // var est_deadline_time = est_deadline.toLocaleTimeString();
-    //     // $("#modal-est-deadline").text(est_deadline_date + ' at ' + est_deadline_time);
-
-
-
-
-
-
-
-
-
     .catch(function(error){
-        console.log('here error');
         console.log(error);
     });
+}
 
-    console.log('ethPrice: ' + ethPrice);
-    console.log('gasPrice: ' + gasPrice);
+
+// *** API call to ethgasstation to get gas prices and times
+// Stores globally and calls populate estimates
+function getGasInfo() {
+    // Gas prices
+    fetch(proxy_url + 'https://ethgasstation.info/json/ethgasAPI.json')
+    .then((resp) => resp.json())  // Turn into json data
+    .then(function(data){
+        gasInfo = data;
+        populateEstimates();
+    })
+    .catch(function(error){
+        console.log(error);
+    });
+}
+
+
+// *** Appends the APIs to the modal
+// End of review modal sequence
+function populateEstimates() {
+
+    var user_gas_choice = $("#gas-price").find(':selected').val(); // Get user gas choice
+    var deploy_gas = 307000;
+    var claim_gas = 48200;
+
+    // Display costs and times based upon his choice and blockchain data
+    if (user_gas_choice == 'standard') {
+
+        // Set estimated deadline
+        var est_review_deadline = new Date((gasInfo.avgWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
+        $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
+
+        // Set estimated deploy cost
+        var freeroll_deploy_estimate = deploy_gas * (gasInfo.average / 10) * 0.000000001 * ethPrice;
+        $("#modal-deploy-cost").text(freeroll_deploy_estimate.toFixed(2) + ' usd');
+
+        // Set estimated victory cost
+        var freeroll_call_estimate = claim_gas * (gasInfo.average / 10) * 0.000000001 * ethPrice;
+        $("#modal-claim-cost").text(freeroll_call_estimate.toFixed(2) + ' usd');
+    }
+
+    else if (user_gas_choice == 'low') {
+
+        // Set estimated deadline
+        var est_review_deadline = new Date((gasInfo.safeLowWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
+        $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
+
+        // Set estimated deploy cost
+        var freeroll_deploy_estimate = deploy_gas * (gasInfo.safeLow / 10) * 0.000000001 * ethPrice;
+        $("#modal-deploy-cost").text(freeroll_deploy_estimate.toFixed(2) + ' usd');
+
+        // Set estimated victory cost
+        var freeroll_call_estimate = claim_gas * (gasInfo.safeLow / 10) * 0.000000001 * ethPrice;
+        $("#modal-claim-cost").text(freeroll_call_estimate.toFixed(2) + ' usd');
+    }
+
+    else if (user_gas_choice == 'fast') {
+
+        // Set estimated deadline
+        var est_review_deadline = new Date((gasInfo.fastWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
+        $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
+
+        // Set estimated deploy cost
+        var freeroll_deploy_estimate = deploy_gas * (gasInfo.fast / 10) * 0.000000001 * ethPrice;
+        $("#modal-deploy-cost").text(freeroll_deploy_estimate.toFixed(2) + ' usd');
+
+        // Set estimated victory cost
+        var freeroll_call_estimate = claim_gas * (gasInfo.fast / 10) * 0.000000001 * ethPrice;
+        $("#modal-claim-cost").text(freeroll_call_estimate.toFixed(2) + ' usd');
+    }
+
+    else {
+        $("#modal-est-deadline").text('Select a gas price');
+        $("#modal-deploy-cost").text('Select a gas price');
+        $("#modal-claim-cost").text('Select a gas price');
+    }
+
+    $("#review-load-message").hide();
+    $("#blockchain-review-information").show();
+}
+
+
+// *** Forms and submits the web3 transaction
+// Returns message upon freeroll submit
+// Clears post freeroll inputs
+function submitFreeroll() {
+
+    // Modal loading message show
+    $("#submitting-load-message").show();
+
+    // Hide review information container
+    $("#blockchain-review-information").hide();
+
+    // Gas price level
+    if ($("#gas-price").find(':selected').val() == 'standard') {
+        var web3_gas_price = (gasInfo.average / 10) * 1000000000;
+    }
+    else if ($("#gas-price").find(':selected').val() == 'low') {
+        var web3_gas_price = (gasInfo.safeLow / 10) * 1000000000;
+    }
+    else if ($("#gas-price").find(':selected').val() == 'fast') {
+        var web3_gas_price = (gasInfo.fast / 10) * 1000000000;
+    }
+    else {
+        alert('Sorry something has gone wrong while submitting your transaction (gas prices)');
+        return
+    }
+
+    console.log();
+
+    // Transaction data
+    var freeroll_tx_data = factoryInstance.newFreeroll.getData(
+        web3_description,
+        web3_receiver,
+        web3_charity_bool,
+        web3_category,
+        web3_duration_sec,
+        web3_location);
+
+    // Disclaimer to user
+    var user_confirmation = confirm('By confirming this message you understand:' + '\n' +
+        '1 - Your freeroll contract is final. You cannot edit it.' + '\n' +
+        '2 - freerollio is not responsible for anything. Use at your own risk.' + '\n' +
+        'If you have any questions please feel free contact me.');
+    // Submit transaction
+
+    if (user_confirmation == true) {
+        web3.eth.sendTransaction({
+            from: web3.eth.defaultAccount,
+            to: factoryInstance.address,
+            value: web3_amount_wei,
+            // Gas - Should set a limit
+            gasPrice: web3_gas_price,
+            data: freeroll_tx_data}, function(err, txHash) {
+
+                if (!err) {
+                    console.log(txHash);
+                    $("#submitting-load-message").hide(); // Hide loading message
+                    $("#txHash").attr('href', ('https://ropsten.etherscan.io/tx/' + txHash));
+                    $("#txHash-submitted-message").show(); // Show message with txHash and link and instructions
+
+                    // Clears web3 variables
+                    web3_description = null;
+                    web3_receiver = null;
+                    web3_charity_bool = null;
+                    web3_amount_wei = null;
+                    web3_duration_sec = null;
+                    web3_location = null;
+                    web3_category = null;
+
+                    // Clear post dropdown inputs
+                    $("#user-description").val("");
+                    $("#user-receiver").val("");
+                    $("#user-amount-eth").val("");
+                    $("#user-duration").val("");
+                    $("#user-location").val("");
+                    $("#user-description").val("");
+                    $("#user-category").val("");
+
+
+                }
+                else {
+                    console.error(err);
+                    $("#submitting-load-message").hide(); // Hide loading message
+                    $("#txHash-rejected-message").show();
+                    // Hide loading message
+                    // Show message with error
+                }
+
+            }
+        );
+    }
+    else {
+        closeModal();
+    }
 }
 
 
 
-function populateEstimates(_this) {
+// *** Button click and mics functions ****************************************************************************************************************
 
-    if ($(_this).val() == 'low') { // Low
-        // Set time estimate
-        // Set deployment cost
-        // Set claim victory cost
-    }
-    else if ($(_this).val() == 'standard') {
+// Watch for esc to close modal
+$(document).keydown(function(event) {
+      if (event.keyCode == 27) {
+        closeModal();
+      }
+});
 
-    }
-    else if ($(_this).val() == 'high') {
 
+// Close BOTH modals (clears the html texts)
+function closeModal() {
+    $(".modal").css('display', 'none'); // Close modal
+
+    // Details Modal
+    $("#details-load-message").show(); // Show load message
+    $("#details-body-data").hide(); // Hide body
+    $("#details-sub-header").hide(); // Hide subheader
+    $("#details-sub-header").text(""); // Address in title
+    $(".details-address-container").attr('id', ""); // Address as id for buttons
+    $("#details-sub-header").attr('href', ""); // Address etherscan
+    $("#modal-poster").text("");
+    $("#modal-dateposted").text("");
+    $("#modal-description").text("");
+    $("#modal-duration").text("");
+    $("#modal-expiration").text("");
+    $("#modal-value").text("");
+    $("#modal-receiver").text("");
+    $("#modal-location-avail").text("");
+    $("#modal-location").text("");
+    $("#modal-deadline").text("");
+    $("#modal-outcome").text("");
+    $("#modal-remaining-balance").text("");
+
+    // Review Modal
+    $("#review-load-message").show(); // Show review load message
+    $("#submitting-load-message").hide();
+}
+
+
+// Open and close the nav menu
+function navButton() {
+    if ($(".hamburger").is(':visible')) {
+        $(".nav-menu").slideToggle( "slow", function() {
+            $( ".hamburger" ).hide();
+            $( ".cross" ).show();
+        });
     }
     else {
-        null
+        $( ".nav-menu" ).slideToggle( "slow", function() {
+            $( ".cross" ).hide();
+            $( ".hamburger" ).show();
+        });
     }
-
-
 }
