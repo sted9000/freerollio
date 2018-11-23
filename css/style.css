@@ -111,9 +111,12 @@ footer {
   height: 50px;
   margin-top: -50px;
   text-align: center; }
-  footer a {
+  footer a, footer a:link, footer a:visited, footer a:focus, footer a:hover, footer a:active {
+    color: grey;
     text-decoration: none;
-    color: grey; }
+    cursor: pointer; }
+    footer a:hover, footer a:link:hover, footer a:visited:hover, footer a:focus:hover, footer a:hover:hover, footer a:active:hover {
+      text-decoration: underline; }
 
 .hamburger {
   background: none;
@@ -191,6 +194,8 @@ footer {
     .dropdown-container .dropdown-button:hover {
       background-color: white;
       color: black; }
+    .dropdown-container .dropdown-button:focus {
+      outline: none; }
   .dropdown-container .dropdown-content-container {
     display: none;
     max-width: 500px;
@@ -214,7 +219,40 @@ footer {
       .dropdown-container .dropdown-content-container .float-button:hover {
         background-color: white;
         color: black; }
+    .dropdown-container .dropdown-content-container #guide-button:hover {
+      cursor: not-allowed; }
 
+#post-container .post-input-row {
+  position: relative; }
+  #post-container .post-input-row img {
+    float: right;
+    margin-left: 5px;
+    margin-right: 69px; }
+  #post-container .post-input-row input, #post-container .post-input-row select {
+    float: right; }
+  #post-container .post-input-row .post-info-input-container {
+    margin-right: 98px; }
+  #post-container .post-input-row .tooltiptext-container img {
+    float: right;
+    margin-left: 5px;
+    margin-right: 69px; }
+  #post-container .post-input-row .tooltiptext-container .tooltiptext {
+    white-space: pre;
+    font-size: .8em;
+    visibility: hidden;
+    top: -5px;
+    left: 415px;
+    background-color: white;
+    border-radius: 6px;
+    border-width: medium;
+    border-style: solid;
+    border-color: black;
+    padding: 10px;
+    position: absolute;
+    /* Position the tooltip ***Important***/ }
+  #post-container .post-input-row .tooltiptext-container:hover .tooltiptext {
+    visibility: visible;
+    z-index: 1; }
 #post-container .user-input {
   margin: 10px; }
   #post-container .user-input .post-info-title-container {
@@ -236,7 +274,7 @@ footer {
   #post-container .post-select:focus {
     outline: 0; }
 #post-container #review-container-button {
-  margin: 2.5%;
+  margin: 30px 2.5% 2.5% 2.5%;
   padding: .8em;
   border-radius: 1em;
   border-width: 0;
@@ -438,13 +476,20 @@ footer {
   .modal-content .modal-body {
     padding: 10px;
     font-size: .8em; }
+    .modal-content .modal-body .after-submit-container {
+      padding: 10px; }
+      .modal-content .modal-body .after-submit-container h3 {
+        margin: 0 auto;
+        text-align: center; }
     .modal-content .modal-body .modal-load-message {
       margin-top: 10px;
       text-align: center; }
     .modal-content .modal-body .modal-body-data {
       display: none; }
       .modal-content .modal-body .modal-body-data .modal-item {
-        margin: 10px 0; }
+        margin: 10px 0;
+        max-width: 100%;
+        overflow: hidden; }
         .modal-content .modal-body .modal-body-data .modal-item .vital-content {
           font-weight: bold; }
         .modal-content .modal-body .modal-body-data .modal-item p {

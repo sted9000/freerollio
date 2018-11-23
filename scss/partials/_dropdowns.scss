@@ -20,6 +20,10 @@
             background-color: white;
             color: black;
         }
+
+		&:focus {
+			outline: none;
+		}
     }
 
     .dropdown-content-container {
@@ -52,11 +56,73 @@
                 color: black;
             }
         }
-    }
+
+		#guide-button {
+			&:hover {
+			   cursor: not-allowed;
+			}
+		}
+	}
 }
 
 // Modifications for post container
 #post-container {
+
+	.post-input-row {
+		position: relative;
+
+		img {
+			float:right;
+			margin-left: 5px;
+			margin-right: 69px;
+		}
+
+		input, select {
+			float:right;
+		}
+
+		.post-info-input-container {
+			margin-right: 98px;
+		}
+
+		// #user-input-receiver {
+		// 	margin-right: 98px;
+		// }
+
+		.tooltiptext-container {
+			img {
+				float:right;
+				margin-left: 5px;
+				margin-right: 69px;
+			}
+
+
+
+					.tooltiptext {
+
+						white-space: pre;
+						font-size: .8em;
+						visibility: hidden;
+						top: -5px;
+						left: 415px;
+						background-color: white;
+						border-radius: 6px;
+						border-width: medium;
+						border-style: solid;
+						border-color: black;
+						padding: 10px;
+						position: absolute; /* Position the tooltip ***Important***/
+					}
+
+					&:hover .tooltiptext {
+						visibility: visible;
+						z-index: 1;
+					}
+
+		}
+
+
+	}
 
     .user-input {
         margin: 10px;
@@ -93,7 +159,7 @@
 
 	#review-container-button {
 
-		margin: 2.5%;
+		margin: 30px 2.5% 2.5% 2.5%;
 		padding: .8em;
 		border-radius: 1em;
 		border-width: 0;
@@ -105,5 +171,6 @@
 		&:hover {
 			background-color: white;
 		}
+
 	}
 }
