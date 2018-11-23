@@ -825,7 +825,7 @@ function populateEstimates() {
     if (user_gas_choice == 'standard') {
 
         // Set estimated deadline
-        var est_review_deadline = new Date((gasInfo.avgWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
+        var est_review_deadline = new Date((gasInfo.avgWait * gasInfo.block_time * 1000) + (web3_duration_sec * 1000) + Date.now());
         $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
 
         // Set estimated deploy cost
@@ -840,7 +840,7 @@ function populateEstimates() {
     else if (user_gas_choice == 'low') {
 
         // Set estimated deadline
-        var est_review_deadline = new Date((gasInfo.safeLowWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
+        var est_review_deadline = new Date((gasInfo.safeLowWait * gasInfo.block_time * 1000) + (web3_duration_sec * 1000) + Date.now());
         $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
 
         // Set estimated deploy cost
@@ -855,7 +855,7 @@ function populateEstimates() {
     else if (user_gas_choice == 'fast') {
 
         // Set estimated deadline
-        var est_review_deadline = new Date((gasInfo.fastWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
+        var est_review_deadline = new Date((gasInfo.fastWait * gasInfo.block_time * 1000) + (web3_duration_sec * 1000) + Date.now());
         $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
 
         // Set estimated deploy cost
