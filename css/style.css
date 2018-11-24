@@ -257,6 +257,11 @@ footer {
   margin: 10px; }
   #post-container .user-input .post-info-title-container {
     padding: 0; }
+  #post-container .user-input input {
+    width: 279.5px;
+    border: 2px;
+    border-style: inset;
+    padding: 1px 0; }
   #post-container .user-input #user-input-receiver {
     display: none; }
 #post-container .post-select {

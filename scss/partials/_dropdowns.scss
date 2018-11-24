@@ -7,6 +7,7 @@
 		margin: 0;
 	}
 
+
     .dropdown-button {
         width: 250px;
         background-color: black;
@@ -130,6 +131,14 @@
         .post-info-title-container {
             padding: 0;
         }
+
+		input {
+			width: 279.5px;
+			border: 2px;
+			border-style: inset;
+			padding: 1px 0;
+
+		}
 
         #user-input-receiver {
             display: none;
