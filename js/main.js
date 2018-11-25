@@ -652,7 +652,7 @@ function checkFormats() {
     // Receiver (is valid address)
     if ($("#user-receiver").val() == '3') {
         if (web3.isAddress($("#user-input-receiver").val()) == true) {
-            web3_receiver = $("#user-receiver").val();
+            web3_receiver = $("#user-input-receiver").val();
             web3_charity_bool = false;
         }
         else {
