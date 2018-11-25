@@ -456,6 +456,7 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             $("#modal-expiration").text(modal_expir_date + ' at ' + modal_expir_time); // Add expir date
                             $("#modal-value").text(web3.fromWei(modal_args['_value'], 'ether') + ' ETH'); // Add freeroll value
                             $("#modal-receiver").text(receiver); // Add receiver address
+                            console.log(receiver);
                             $("#modal-receiver").attr('href', ('https://etherscan.io/address/' + receiver)); // Receiver etherscan
                             $("#modal-receiver").attr('target', '_blank'); // In new tab
 
