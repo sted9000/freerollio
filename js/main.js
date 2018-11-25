@@ -8,18 +8,18 @@
 
 // *** Variables *******************************************************************************************************************************************
 // Search and display variables
-var blocks_per_search = 10000; // search area
+const blocks_per_search = 10000; // search area
 var done_search_switch = false; // flips when startblock has been reached
-var start_block = 4449994; // block of factory deployment
+const start_block = 6771111; // block of factory deployment
 var end_block = null; // block to search until
 var num_logs_to_display = 4; // defauls of displayed logs
 var logs_displayed = 0; // count of logs displayed
 var logs_array_all = []; // all logs
 var queue = null; // logs gathered but not displayed
 var timestamp_counter = 0;
-charity_list = ['0xc7464dbcA260A8faF033460622B23467Df5AEA42', '0xD3F81260a44A1df7A7269CF66Abd9c7e4f8CdcD1', '0x631bE4762a3d5c2fe2D9166e530F74AdDFCb1567']; // [GiveDirectly, Heifer International, My address]
+const charity_list = ['0xc7464dbcA260A8faF033460622B23467Df5AEA42', '0xD3F81260a44A1df7A7269CF66Abd9c7e4f8CdcD1', '0x631bE4762a3d5c2fe2D9166e530F74AdDFCb1567']; // [GiveDirectly, Heifer International, My address]
 // Modal variables
-var proxy_url = 'https://cors-anywhere.herokuapp.com/';
+const proxy_url = 'https://cors-anywhere.herokuapp.com/';
 var ethPrice = null;
 var gasInfo = null;
 var web3_description = null;
@@ -296,10 +296,10 @@ function displayLogs(_logs_to_display) {
             }).appendTo('#' + unique_id + '_title_row');
             if (logs_to_display_now[i][0].args['_location'] == "") { // No location
                 $('#' + unique_id + '_title_row' + ' #location-span').append(
-                    '<img src="/freerollio/images/www_grey_24px.png" />'); // black coin
+                    '<img src="/images/www_grey_24px.png" />'); // black coin
             } else { // Location
                 $('#' + unique_id + '_title_row' + ' #location-span').append(
-                    '<img src="/freerollio/images/www_black_24px.png" />'); // gold coin
+                    '<img src="/images/www_black_24px.png" />'); // gold coin
             }
 
             // #freeroll-value-span
@@ -309,10 +309,10 @@ function displayLogs(_logs_to_display) {
             }).appendTo('#' + unique_id + '_title_row');
             if (web3.fromWei(logs_to_display_now[i][0].args['_value'], 'ether') < .5) { // < 0.5 ETH
                 $('#' + unique_id + '_title_row' + ' #freeroll-value-span').append(
-                    '<img src="/freerollio/images/black_coin_24px.png" />'); // black coin
+                    '<img src="/images/black_coin_24px.png" />'); // black coin
             } else { // > 0.5 ETH
                 $('#' + unique_id + '_title_row' + ' #freeroll-value-span').append(
-                    '<img src="/freerollio/images/coin_gold_24px.png" />'); // gold coin
+                    '<img src="/images/coin_gold_24px.png" />'); // gold coin
             }
 
             // #charity-span
@@ -322,10 +322,10 @@ function displayLogs(_logs_to_display) {
             }).appendTo('#' + unique_id + '_title_row');
             if (logs_to_display_now[i][0].args['_charity']) { // charity (bool)
                 $('#' + unique_id + '_title_row' + ' #charity-span').append( // Dark image
-                    '<img id="moneybag-img" src="/freerollio/images/charityhand_dark_24px.png" />');
+                    '<img id="moneybag-img" src="/images/charityhand_dark_24px.png" />');
             } else { // no charity (bool)
                 $('#' + unique_id + '_title_row' + ' #charity-span').append( // Light image
-                    '<img id="moneybag-img" src="/freerollio/images/charityhand_light_24px.png" />');
+                    '<img id="moneybag-img" src="/images/charityhand_light_24px.png" />');
             }
 
             // #category-span
@@ -335,22 +335,22 @@ function displayLogs(_logs_to_display) {
             }).appendTo('#' + unique_id + '_title_row');
             if (logs_to_display_now[i][0].args['_category'] == 0) { // Health
                 $('#' + unique_id + '_title_row' + ' #category-span').append(
-                    '<img id="moneybag-img" src="/freerollio/images/runner_24px.png" />');
+                    '<img id="moneybag-img" src="/images/runner_24px.png" />');
             }
 
             else if (logs_to_display_now[i][0].args['_category'] == 1) { // Skill
                 $('#' + unique_id + '_title_row' + ' #category-span').append(
-                    '<img id="moneybag-img" src="/freerollio/images/music_24px.png" />');
+                    '<img id="moneybag-img" src="/images/music_24px.png" />');
             }
 
             else if (logs_to_display_now[i][0].args['_category'] == 2) { // School/work
                 $('#' + unique_id + '_title_row' + ' #category-span').append(
-                    '<img id="moneybag-img" src="/freerollio/images/book24px.png" />');
+                    '<img id="moneybag-img" src="/images/book24px.png" />');
             }
 
             else if (logs_to_display_now[i][0].args['_category'] == 3) { // Other
                 $('#' + unique_id + '_title_row' + ' #category-span').append(
-                    '<img id="moneybag-img" src="/freerollio/images/new_24px.png" />');
+                    '<img id="moneybag-img" src="/images/new_24px.png" />');
             }
 
             logs_displayed += 1; // Increment number_shown
@@ -424,11 +424,11 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             // Append modal divs w/ information
                             $("#details-sub-header").text(modal_args['_freeroll_addr']); // Address in title
                             $(".details-address-container").attr('id', modal_args['_freeroll_addr']); // Address as id for buttons
-                            $("#details-sub-header").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_freeroll_addr'])); // Address etherscan
+                            $("#details-sub-header").attr('href', ('https://etherscan.io/address/' + modal_args['_freeroll_addr'])); // Address etherscan
                             $("#details-sub-header").attr('target', '_blank'); // In new tab
                             $("#modal-poster").text(modal_args['_poster']); // Add poster address
                             $("#modal-poster").attr('id', modal_args['_poster']); // Add poster address
-                            $("#modal-poster").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_poster'])); // Poster etherscan
+                            $("#modal-poster").attr('href', ('https://etherscan.io/address/' + modal_args['_poster'])); // Poster etherscan
                             $("#modal-poster").attr('target', '_blank'); // In new tab
 
                             var modal_start_object = new Date(modal_event[1] * 1000);
@@ -456,7 +456,7 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             $("#modal-expiration").text(modal_expir_date + ' at ' + modal_expir_time); // Add expir date
                             $("#modal-value").text(web3.fromWei(modal_args['_value'], 'ether') + ' ETH'); // Add freeroll value
                             $("#modal-receiver").text(receiver); // Add receiver address
-                            $("#modal-receiver").attr('href', ('https://ropsten.etherscan.io/address/' + receiver)); // Receiver etherscan
+                            $("#modal-receiver").attr('href', ('https://etherscan.io/address/' + receiver)); // Receiver etherscan
                             $("#modal-receiver").attr('target', '_blank'); // In new tab
 
                             if (modal_args['_location'] == "") {
@@ -731,7 +731,7 @@ function populateModal() {
 
     // Poster address
     $("#review-poster").text(web3.eth.defaultAccount); // Add poster address
-    $("#review-poster").attr('href', ('https://ropsten.etherscan.io/address/' + web3.eth.defaultAccount)); // Poster etherscan
+    $("#review-poster").attr('href', ('https://etherscan.io/address/' + web3.eth.defaultAccount)); // Poster etherscan
     $("#review-poster").attr('target', '_blank'); // In new tab
 
     // Freeroll description
@@ -754,7 +754,7 @@ function populateModal() {
 
     // Receiver
     $("#review-receiver").text(web3_receiver); // Add receiver
-    $("#review-receiver").attr('href', ("https://ropsten.etherscan.io/address/" + web3_receiver)); // Add etherscan
+    $("#review-receiver").attr('href', ("https://etherscan.io/address/" + web3_receiver)); // Add etherscan
     $("#review-receiver").attr('target', '_blank'); // In new tab
 
     // Location
@@ -934,7 +934,7 @@ function submitFreeroll() {
                 if (!err) {
                     console.log(txHash);
                     $("#submitting-load-message").hide(); // Hide loading message
-                    $("#txHash").attr('href', ('https://ropsten.etherscan.io/tx/' + txHash));
+                    $("#txHash").attr('href', ('https://etherscan.io/tx/' + txHash));
                     $("#txHash-submitted-message").show(); // Show message with txHash and link and instructions
 
                     // Clears web3 variables
