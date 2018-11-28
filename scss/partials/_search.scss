@@ -1,10 +1,11 @@
 // Search ........................................................................
 #search-container {
     max-width: 500px;
-    margin: 50px auto 80px;
+    margin: 20px auto 80px;
 
     .search-title-container {
         max-width: 500px;
+        height: 75px;
         display: inline-block;
         box-shadow: 1px 1px 10px rgba(0,0,0,.2);
         border-radius: 2em;
@@ -13,25 +14,23 @@
 
         .title-container {
             width: 500px;
+            padding-top: 20px;
             display: inline-block;
             text-align: center;
             font-size: 1.5em;
-            padding: 10px 0 5px;
-
+            vertical-align: middle;
         }
 
-        .filter-link-container {
+        .filter-link {
             margin: 0;
             width: 500px;
-            margin-bottom: 10px;
             display: inline-block;
             text-align: center;
             cursor: pointer;
+            font-size: .7em;
+            color: grey;
+            margin-bottom: 5px;
 
-            .filter-link {
-                font-size: .7em;
-                color: grey;
-            }
         }
     }
 }
@@ -88,18 +87,16 @@
     }
 }
 
-#no-more-results-category {
+#no-more-results-category, #no-results-category {
     display: none;
 }
 
-#searching-blockchain {
-
-    p {
+#searching-blockchain p {
     text-align: center;
     color: grey;
     font-size: 0.8em;
-    }
 }
+
 // Load-more
 #loadmore-button-container {
     text-align: center;
@@ -123,6 +120,8 @@
     color: grey;
 }
 
+
+
 // Search results
 .single-result-container {
     width: 500px;
@@ -140,79 +139,60 @@
     }
 
     #results-container-tooltiptext {
-        color: grey;
-        font-size: .7em;
-        visibility: hidden;
+        @include tooltiptext;
         top: 10px;
         left: 101%;
-        background-color: #fff;
-        border-radius: 6px;
-        border-style: solid;
-        border-color: grey;
-        padding: 10px;
+        white-space: normal;
         text-align: center;
-
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
+        color: grey;
     }
 
     &:hover #results-container-tooltiptext {
         visibility: visible;
-    }
-
-
-
-
-
-    .search-result-title-row {
-        font-family: Georgia, Times, "Times New Roman", serif;
-        font-weight: normal;
-        color: black;
-        width: 100%;
-
-
-            .result-title {
-
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                padding: 10px 0 0 10px;
-                display: inline-block;
-                max-width: 62%;
-            }
-
-            .icon {
-                float: right;
-                padding:  10px 10px 0;
-
-                div {
-                white-space: pre;
-                text-align: center;
-                }
-
-
-
-            }
-    }
-
-    .search-result-footer-row {
-        margin-top: -10px;
-        display: inline-block;
-        text-decoration: none;
-        font-size: .6em;
-        color: grey;
-
-        .status-footer {
-            float: left;
-            padding-left: 20px;
-        }
     }
 }
 
 
 
 
-// &:hover #location-tooltiptext {
-//     visibility: visible;
-// }
+
+.search-result-title-row {
+    font-family: Georgia, Times, "Times New Roman", serif;
+    font-weight: normal;
+    color: black;
+    width: 100%;
+
+
+    .result-title {
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 10px 0 0 10px;
+        display: inline-block;
+        max-width: 62%;
+    }
+
+    .icon {
+        float: right;
+        padding:  10px 10px 0;
+
+        div {
+            white-space: pre;
+            text-align: center;
+        }
+    }
+}
+
+.search-result-footer-row {
+    margin-top: -10px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: .6em;
+    color: grey;
+
+    .status-footer {
+        float: left;
+        padding-left: 20px;
+    }
+}

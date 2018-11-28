@@ -62,9 +62,7 @@ function checkNetwork(_accountAddressNeeded) {
       switch (netId) {
         case "1":
           console.log('This is mainnet');
-          // Case account check
-          // accountCheck(_accountAddressNeeded);
-          $('body').addClass('error-invalid-network').addClass('error');
+          accountCheck(_accountAddressNeeded);
           break
         case "2":
           console.log('This is the deprecated Morden test network.');
@@ -72,8 +70,7 @@ function checkNetwork(_accountAddressNeeded) {
           break
         case "3":
           console.log('This is the ropsten test network.');
-          accountCheck(_accountAddressNeeded);
-          // $('body').addClass('error-invalid-network').addClass('error');
+          $('body').addClass('error-invalid-network').addClass('error');
           break
         case "4":
           console.log('This is the Rinkeby test network.');
@@ -238,7 +235,7 @@ var factoryABI = web3.eth.contract([
 	}
 ]);
 
-var factoryAddress = '0xF15CD8C7a4c7e28505519765a3470fc691D8D94E'; // Ropstein Testnet Factory Address
+var factoryAddress = '0x451b453E8B8450366F8d309Db8B36E76Ee17177D'; // Mainnet Testnet Factory Address
 
 var factoryInstance = factoryABI.at(factoryAddress); // Connecting Factory ABI and Address
 

@@ -8,18 +8,19 @@
 
 // *** Variables *******************************************************************************************************************************************
 // Search and display variables
-var blocks_per_search = 10000; // search area
+const blocks_per_search = 10000; // search area
 var done_search_switch = false; // flips when startblock has been reached
-var start_block = 4449994; // block of factory deployment
+const start_block = 6771111; // block of factory deployment
 var end_block = null; // block to search until
 var num_logs_to_display = 4; // defauls of displayed logs
 var logs_displayed = 0; // count of logs displayed
 var logs_array_all = []; // all logs
 var queue = null; // logs gathered but not displayed
 var timestamp_counter = 0;
-charity_list = ['0xc7464dbcA260A8faF033460622B23467Df5AEA42', '0xD3F81260a44A1df7A7269CF66Abd9c7e4f8CdcD1', '0x631bE4762a3d5c2fe2D9166e530F74AdDFCb1567']; // [GiveDirectly, Heifer International, My address]
+const charity_list = ['0xc7464dbcA260A8faF033460622B23467Df5AEA42', '0xD3F81260a44A1df7A7269CF66Abd9c7e4f8CdcD1', '0x631bE4762a3d5c2fe2D9166e530F74AdDFCb1567']; // [GiveDirectly, Heifer International, My address]
+const charity_url_list = ['https://givedirectly.org/give-now?crypto=eth', 'https://www.heifer.org/what-you-can-do/give/digital-currency.html', 'https://etherscan.io/address/0x631bE4762a3d5c2fe2D9166e530F74AdDFCb1567']
 // Modal variables
-var proxy_url = 'https://cors-anywhere.herokuapp.com/';
+const proxy_url = 'https://cors-anywhere.herokuapp.com/';
 var ethPrice = null;
 var gasInfo = null;
 var web3_description = null;
@@ -50,8 +51,9 @@ function fireUponFilterChange() {
     logs_displayed = 0; // Clear display counter
     queue = 0; // Clear queue
     $('#loadmore-button-container').hide(); // Hide show more
-    $('.no-search-results-category').hide(); // Hide no results
-    $('.no-more-results-category').hide(); // Hide no more results
+    $('#no-results-category').hide(); // Hide no results
+    $('#no-more-results-category').hide(); // Hide no more results
+
 
     determineFilter(); // Continue process
 }
@@ -378,7 +380,7 @@ function errorsAndMessages(_length_just_displayed) {
         }
         else if (logs_displayed == null || logs_displayed == 0) { // Show no results
             $('#loadmore-button-container').hide(); // Hide show more
-            $('.no-search-results-category').show(); // Show no results
+            $('#no-results-category').show(); // Show no results
         }
         else {
                 $('#loadmore-button-container').hide(); // Hide show more
@@ -424,11 +426,11 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             // Append modal divs w/ information
                             $("#details-sub-header").text(modal_args['_freeroll_addr']); // Address in title
                             $(".details-address-container").attr('id', modal_args['_freeroll_addr']); // Address as id for buttons
-                            $("#details-sub-header").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_freeroll_addr'])); // Address etherscan
+                            $("#details-sub-header").attr('href', ('https://etherscan.io/address/' + modal_args['_freeroll_addr'])); // Address etherscan
                             $("#details-sub-header").attr('target', '_blank'); // In new tab
                             $("#modal-poster").text(modal_args['_poster']); // Add poster address
                             $("#modal-poster").attr('id', modal_args['_poster']); // Add poster address
-                            $("#modal-poster").attr('href', ('https://ropsten.etherscan.io/address/' + modal_args['_poster'])); // Poster etherscan
+                            $("#modal-poster").attr('href', ('https://etherscan.io/address/' + modal_args['_poster'])); // Poster etherscan
                             $("#modal-poster").attr('target', '_blank'); // In new tab
 
                             var modal_start_object = new Date(modal_event[1] * 1000);
@@ -448,28 +450,37 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             var minutes = Math.floor(delta / 60) % 60; // calculate whole minutes
                             delta -= minutes * 60; // subtract
                             var seconds = delta % 60;  // // what's left is seconds
-                            $("#modal-duration").text(days + ' Days, ' + hours + ' Hours, ' + minutes + ' Minutes ' + 'of the contract creation'); // Add duration
+                            $("#modal-duration-days").text(days);
+                            $("#modal-duration-hours").text(hours);
+                            $("#modal-duration-minutes").text(minutes);
 
                             var modal_expir = new Date((modal_args['_duration'].toNumber() + modal_event[1]) * 1000);
                             var modal_expir_date = modal_expir.toDateString();
                             var modal_expir_time = modal_expir.toLocaleTimeString();
-                            $("#modal-expiration").text(modal_expir_date + ' at ' + modal_expir_time); // Add expir date
+                            $("#modal-expiration-date").text(modal_expir_date);
+                            $("#modal-expiration-time").text(modal_expir_time);
                             $("#modal-value").text(web3.fromWei(modal_args['_value'], 'ether') + ' ETH'); // Add freeroll value
                             $("#modal-receiver").text(receiver); // Add receiver address
-                            $("#modal-receiver").attr('href', ('https://ropsten.etherscan.io/address/' + receiver)); // Receiver etherscan
+                            $("#modal-receiver").attr('href', ('https://etherscan.io/address/' + receiver)); // Receiver etherscan
                             $("#modal-receiver").attr('target', '_blank'); // In new tab
 
                             if (modal_args['_location'] == "") {
-                                $('#modal-location-avail').text('Poster has chosen not to verify results.')
+                                $('#modal-location-avail-no').show();
+                                $('#modal-location-avail-yes').hide();
+
+                                console.log('here in no location');
                             }
                             else {
-                                $('#modal-location-avail').text('The poster agrees to verify this accomplish at:');
+                                $('#modal-location-avail-yes').show();
+                                $('#modal-location-avail-no').hide();
+
+                                console.log('here in Location yes');
                                 $("#modal-location").text(' ' + modal_args['_location']); // Add location text
                                 $("#modal-location").attr('href', ('https://' + modal_args['_location'])); // Location href
                                 $("#modal-location").attr('target', '_blank'); // In new tab
                             }
 
-                            $("#modal-trust").text('Honor');
+
 
 
 
@@ -477,9 +488,9 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             // Logic for status of contract
                             if (((modal_args['_duration'].toNumber() + modal_event[1]) * 1000) <  Date.now()) { // expired
                                 if (web3.fromWei(balance, 'ether') == 0) { // Paid out winner (100%)
-                                    $("#modal-deadline").text(' Passed');
-                                    $("#modal-outcome").text(' Victory Claimed');
-                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3));
+                                    $("#modal-deadline-expired").show();
+                                    $("#modal-outcome-victory").show();
+                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3) + ' ETH');
                                     $("#claim-victory").hide();
                                     $("#payout").hide();
                                     $("#claim-victory-grey").show();
@@ -488,9 +499,9 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
 
                                 }
                                 else if (balance == 1) { // Paid out receiver (all but 1 wei)
-                                    $("#modal-deadline").text(' Passed');
-                                    $("#modal-outcome").text(' Unsuccessful');
-                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3));
+                                    $("#modal-deadline-expired").show();
+                                    $("#modal-outcome-unsuccessful").show();
+                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3) + ' ETH');
                                     $("#claim-victory").hide();
                                     $("#payout").hide();
                                     $("#claim-victory-grey").show();
@@ -498,10 +509,10 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
 
                                 }
                                 else {
-                                    $("#modal-deadline").text(' Passed');
-                                    $("#modal-outcome").text(' Unsucessful');
+                                    $("#modal-deadline-expired").show();
+                                    $("#modal-outcome-unsuccessful").show();
                                     // console.log(web3.fromWei(balance, 'ether').toNumber());
-                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether').toNumber().toFixed(2));
+                                    $("#modal-remaining-balance").text(' ' + web3.fromWei(balance, 'ether').toNumber().toFixed(2) + ' ETH');
                                     $("#payout-grey").hide();
                                     $("#claim-victory").hide();
                                     $("#claim-victory-grey").show();
@@ -511,9 +522,9 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                             }
                             else { // active
                                 if (web3.fromWei(balance, 'ether') == 0) { // Paid out winner (100%)
-                                    $("#modal-deadline").text(' Active');
-                                    $("#modal-outcome").text(' Victory Claimed');
-                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3));
+                                    $("#modal-deadline-active").show();
+                                    $("#modal-outcome-victory").show();
+                                    $("#modal-remaining-balance").text(' ' + Math.trunc(web3.fromWei(balance, 'ether'), 3) + ' ETH');
                                     $("#claim-victory").hide();
                                     $("#payout").hide();
                                     $("#claim-victory-grey").show();
@@ -522,8 +533,8 @@ function fireUponDetailsClick(_this) { // Need this to know what freeroll was cl
                                 }
 
                                 else {
-                                    $("#modal-deadline").text(' Active'); // Ongoing
-                                    $("#modal-outcome").text(' TBD');
+                                    $("#modal-deadline-active").show();
+                                    $("#modal-outcome-tbd").show();
                                     $("#modal-remaining-balance").text(' ' + 'NA');
                                     $("#payout").hide();
                                     $("#payout-grey").show();
@@ -567,9 +578,17 @@ function payoutFreeroll() {
 
             if (!err) {
                 console.log(txHash);
+
+                $(".modal-button-container").hide();
+                $("#payoutHash").attr('href', ('https://etherscan.io/tx/' + txHash));
+                $("#payout-success-cont").show(); // Show message with txHash and link and instructions
+
             }
             else {
                 console.error(err);
+
+                $(".modal-button-container").hide();
+                $("#payout-reject-cont").show(); // Show message with txHash and link and instructions
             }
         }
     );
@@ -589,9 +608,17 @@ function claimVictory() {
 
             if (!err) {
                 console.log(txHash);
+
+                $(".modal-button-container").hide();
+                $("#payoutHash").attr('href', ('https://etherscan.io/tx/' + txHash));
+                $("#payout-success-cont").show(); // Show message with txHash and link and instructions
+
             }
             else {
                 console.error(err);
+
+                $(".modal-button-container").hide();
+                $("#payout-reject-cont").show(); // Show message with txHash and link and instructions
             }
         }
     );
@@ -652,7 +679,7 @@ function checkFormats() {
     // Receiver (is valid address)
     if ($("#user-receiver").val() == '3') {
         if (web3.isAddress($("#user-input-receiver").val()) == true) {
-            web3_receiver = $("#user-receiver").val();
+            web3_receiver = $("#user-input-receiver").val();
             web3_charity_bool = false;
         }
         else {
@@ -731,7 +758,7 @@ function populateModal() {
 
     // Poster address
     $("#review-poster").text(web3.eth.defaultAccount); // Add poster address
-    $("#review-poster").attr('href', ('https://ropsten.etherscan.io/address/' + web3.eth.defaultAccount)); // Poster etherscan
+    $("#review-poster").attr('href', ('https://etherscan.io/address/' + web3.eth.defaultAccount)); // Poster etherscan
     $("#review-poster").attr('target', '_blank'); // In new tab
 
     // Freeroll description
@@ -747,27 +774,37 @@ function populateModal() {
     var minutes = Math.floor(delta / 60) % 60; // calculate whole minutes
     delta -= minutes * 60; // subtract
     var seconds = delta % 60;  // // what's left is seconds
-    $("#review-duration").text(days + ' Days, ' + hours + ' Hours, ' + minutes + ' Minutes '); // Add duration
+    $("#review-duration-days").text(days);
+    $("#review-duration-hours").text(hours);
+    $("#review-duration-minutes").text(minutes);
 
     // Amount
     $("#review-amount").text(web3.fromWei(web3_amount_wei, 'ether') + ' ETH'); // Add amount
 
     // Receiver
     $("#review-receiver").text(web3_receiver); // Add receiver
-    $("#review-receiver").attr('href', ("https://ropsten.etherscan.io/address/" + web3_receiver)); // Add etherscan
+    $("#review-receiver").attr('href', ("https://etherscan.io/address/" + web3_receiver)); // Add etherscan
     $("#review-receiver").attr('target', '_blank'); // In new tab
+
+    for (var i=0;i<charity_list.length;i++) {
+        if (web3_receiver == charity_list[i]) {
+            $("#review-check-addr-mess").show();
+            $("#review-check-addr-link").attr('href', charity_url_list[i]);
+            $("#review-check-addr-link").attr('target', '_blank');
+            break
+        }
+    }
 
     // Location
     if ($("#user-location").val() == "") {
-        $("#review-location-mess").text("You DO NOT intend to verify your results");
+        $("#review-location-mess-no").show();
+        $("#review-location-mess-yes").hide();
     }
     else {
-        $("#review-location-mess").text("You agree to verifiy your results at:");
+        $("#review-location-mess-yes").show();
         $("#review-location").text(" " + web3_location);
     }
 
-    // Trust system
-    $("#review-trust").text("Honor");
 
     // Show modal body
     $("#review-body-data").show();
@@ -818,15 +855,16 @@ function getGasInfo() {
 function populateEstimates() {
 
     var user_gas_choice = $("#gas-price").find(':selected').val(); // Get user gas choice
-    var deploy_gas = 307000;
+    var deploy_gas = 350000;
     var claim_gas = 48200;
 
     // Display costs and times based upon his choice and blockchain data
     if (user_gas_choice == 'standard') {
 
         // Set estimated deadline
-        var est_review_deadline = new Date((gasInfo.avgWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
-        $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
+        var est_review_deadline = new Date((gasInfo.avgWait * gasInfo.block_time * 1000) + (web3_duration_sec * 1000) + Date.now());
+        $("#modal-est-deadline-date").text(est_review_deadline.toDateString());
+        $("#modal-est-deadline-time").text(est_review_deadline.toLocaleTimeString());
 
         // Set estimated deploy cost
         var freeroll_deploy_estimate = deploy_gas * (gasInfo.average / 10) * 0.000000001 * ethPrice;
@@ -840,8 +878,9 @@ function populateEstimates() {
     else if (user_gas_choice == 'low') {
 
         // Set estimated deadline
-        var est_review_deadline = new Date((gasInfo.safeLowWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
-        $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
+        var est_review_deadline = new Date((gasInfo.safeLowWait * gasInfo.block_time * 1000) + (web3_duration_sec * 1000) + Date.now());
+        $("#modal-est-deadline-date").text(est_review_deadline.toDateString());
+        $("#modal-est-deadline-time").text(est_review_deadline.toLocaleTimeString());
 
         // Set estimated deploy cost
         var freeroll_deploy_estimate = deploy_gas * (gasInfo.safeLow / 10) * 0.000000001 * ethPrice;
@@ -852,11 +891,13 @@ function populateEstimates() {
         $("#modal-claim-cost").text(freeroll_call_estimate.toFixed(2) + ' usd');
     }
 
-    else if (user_gas_choice == 'fast') {
+    else {
 
         // Set estimated deadline
-        var est_review_deadline = new Date((gasInfo.fastWait * gasInfo.block_time * 1000) + (web3_duration_sec * 60 * 60 * 24 * 1000) + Date.now());
-        $("#modal-est-deadline").text(est_review_deadline.toDateString() + ' at ' + est_review_deadline.toLocaleTimeString());
+        var est_review_deadline = new Date((gasInfo.fastWait * gasInfo.block_time * 1000) + (web3_duration_sec * 1000) + Date.now());
+
+        $("#modal-est-deadline-date").text(est_review_deadline.toDateString());
+        $("#modal-est-deadline-time").text(est_review_deadline.toLocaleTimeString());
 
         // Set estimated deploy cost
         var freeroll_deploy_estimate = deploy_gas * (gasInfo.fast / 10) * 0.000000001 * ethPrice;
@@ -867,11 +908,6 @@ function populateEstimates() {
         $("#modal-claim-cost").text(freeroll_call_estimate.toFixed(2) + ' usd');
     }
 
-    else {
-        $("#modal-est-deadline").text('Select a gas price');
-        $("#modal-deploy-cost").text('Select a gas price');
-        $("#modal-claim-cost").text('Select a gas price');
-    }
 
     $("#review-load-message").hide();
     $("#blockchain-review-information").show();
@@ -882,12 +918,6 @@ function populateEstimates() {
 // Returns message upon freeroll submit
 // Clears post freeroll inputs
 function submitFreeroll() {
-
-    // Modal loading message show
-    $("#submitting-load-message").show();
-
-    // Hide review information container
-    $("#blockchain-review-information").hide();
 
     // Gas price level
     if ($("#gas-price").find(':selected').val() == 'standard') {
@@ -916,25 +946,34 @@ function submitFreeroll() {
         web3_location);
 
     // Disclaimer to user
-    var user_confirmation = confirm('By confirming this message you understand:' + '\n' +
-        '1 - Your freeroll contract is final. You cannot edit it.' + '\n' +
+    var user_confirmation = confirm('Please read the following before confirming:' + '\n' +
+        '1 - Make sure you have reviewed the freeroll\'s details. Freerolls are final after they are submitted.' + '\n' +
         '2 - freerollio is not responsible for anything. Use at your own risk.' + '\n' +
-        'If you have any questions please feel free contact me.');
+        '3 - Only risk money you can afford to lose.' + '\n' +
+        'If you have any questions please feel free contact me before submitting.');
     // Submit transaction
 
     if (user_confirmation == true) {
+
+        // Modal loading message show
+        $("#submitting-load-message").show();
+
+        // Hide review information container
+        $("#blockchain-review-information").hide();
+
+        
         web3.eth.sendTransaction({
             from: web3.eth.defaultAccount,
             to: factoryInstance.address,
             value: web3_amount_wei,
-            // Gas - Should set a limit
+            gas: 350000, // mm says 460000 (this the the gas limit), but only deploy_gas amount is used 326882 was used by a large title and url
             gasPrice: web3_gas_price,
             data: freeroll_tx_data}, function(err, txHash) {
 
                 if (!err) {
                     console.log(txHash);
                     $("#submitting-load-message").hide(); // Hide loading message
-                    $("#txHash").attr('href', ('https://ropsten.etherscan.io/tx/' + txHash));
+                    $("#txHash").attr('href', ('https://etherscan.io/tx/' + txHash));
                     $("#txHash-submitted-message").show(); // Show message with txHash and link and instructions
 
                     // Clears web3 variables
@@ -968,9 +1007,6 @@ function submitFreeroll() {
             }
         );
     }
-    else {
-        closeModal();
-    }
 }
 
 
@@ -991,6 +1027,9 @@ function closeModal() {
 
     // Details Modal
     $("#details-load-message").show(); // Show load message
+    $(".modal-button-container").show();
+    $("#payout-success-cont").hide();
+    $("#payout-reject-cont").hide();
     $("#details-body-data").hide(); // Hide body
     $("#details-sub-header").hide(); // Hide subheader
     $("#details-sub-header").text(""); // Address in title
@@ -999,19 +1038,33 @@ function closeModal() {
     $("#modal-poster").text("");
     $("#modal-dateposted").text("");
     $("#modal-description").text("");
-    $("#modal-duration").text("");
-    $("#modal-expiration").text("");
+    $("#modal-duration-days").text("");
+    $("#modal-duration-hours").text("");
+    $("#modal-duration-minutes").text("");
+    $("#modal-expiration-date").text("");
+    $("#modal-expiration-time").text("");
     $("#modal-value").text("");
     $("#modal-receiver").text("");
-    $("#modal-location-avail").text("");
+    $("#modal-location-avail-yes").hide();
+    $("#modal-location-avail-no").hide();
     $("#modal-location").text("");
-    $("#modal-deadline").text("");
-    $("#modal-outcome").text("");
+    $("#modal-deadline-expired").hide();
+    $("#modal-deadline-active").hide();
+    $("#modal-outcome-victory").hide();
+    $("#modal-outcome-unsuccessful").hide();
+    $("#modal-outcome-tbd").hide();
     $("#modal-remaining-balance").text("");
 
     // Review Modal
+    $("#blockchain-review-information").hide();
     $("#review-load-message").show(); // Show review load message
     $("#submitting-load-message").hide();
+    $("#review-location-mess-no").hide();
+    $("#review-location-mess-yes").hide();
+    $("#est-info-container").show();
+    $("#est-select-gas-message").hide();
+    $("#review-check-addr-mess").hide();
+    $("#txHash-rejected-message").hide();
 }
 
 

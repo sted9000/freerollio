@@ -1,5 +1,9 @@
-// Modal ..................................................
-/* The Modal (background) */
+/* Modals
+- Freerollio has two different modals (details and review)
+*/
+
+
+// Modal Page background
 .modal {
    display: none; /* Hidden by default */
    position: fixed; /* Stay in place */
@@ -13,159 +17,150 @@
    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* Modal Content/Box */
-.modal-content {
+// Modal Content Container
+.modal-form {
    background-color: #fefefe;
    padding: 20px;
    border: 1px solid #888;
    width: 400px; /* Could be more or less, depending on screen size */
-
-   .modal-title {
-       text-align: center;
-       border-bottom: 1px solid grey;
-       position: relative;
-       padding-bottom: 10px;
-
-       h3 {
-           margin-bottom: 0;
-       }
-
-       #details-address-container {
-           display: none;
-       }
-
-       .modal-sub-header-a {
-           margin: 0 auto;
-           width: 70%;
-           white-space: nowrap;
-           overflow: hidden;
-           text-overflow: ellipsis;
-           font-size: .8em;
-           margin-bottom: 10px;
-           font-weight: bold;
-       }
-
-
-       // .modal-address-container {
-       //     display: none;
-       //     margin: 0 auto;
-       //     width: 70%;
-       //     white-space: nowrap;
-       //     overflow: hidden;
-       //     text-overflow: ellipsis;
-       //     font-size: .8em;
-       //     margin-bottom: 10px;
-       //     font-weight: bold;
-       // }
-   }
-
-   .modal-body {
-       padding: 10px;
-       font-size: .8em;
-
-       .after-submit-container {
-           padding: 10px;
-
-           h3 {
-               margin: 0 auto;
-               text-align: center;
-           }
-
-
-       }
-
-
-
-       .modal-load-message {
-           margin-top: 10px;
-           text-align: center;
-       }
-
-       .modal-body-data {
-
-           display: none;
-
-           .modal-item {
-               margin: 10px 0;
-               max-width: 100%;
-               overflow: hidden;
-
-               .vital-content {
-                   font-weight: bold;
-               }
-
-               p {
-                   display: inline-block;
-                   margin: 0;
-                   padding: 0;
-               }
-
-               a {
-                  font-weight: bold;
-               }
-           }
-
-           .modal-body-border {
-               margin: 10px auto 10px;
-               width: 60%;
-               border-bottom: 1px solid grey;
-           }
-
-           .modal-button-container {
-               margin-top: 5px;
-
-               .valid-button {
-                   background-color: $grey-btn;
-                   color: black;
-                   padding: 10px;
-                   border-radius: 1em;
-                   box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-                   border-width: 0;
-                   float: left;
-                   width: 45%;
-                   margin: 2.5%;
-
-                   &:hover {
-                       background-color: white;
-                       color: black;
-                   }
-               }
-
-               .greyout-button {
-                   background-color: white;
-                   color: black;
-                   padding: 10px;
-                   border-radius: 1em;
-                   box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-                   border-width: 0;
-                   float: left;
-                   width: 45%;
-                   margin: 2.5%;
-
-                   &:hover {
-                      cursor: not-allowed;
-
-                   }
-               }
-           }
-       }
-   }
 }
 
+// Details Modal
 .content-left {
     margin: 50px 0 0 20px;
 }
 
+// Review Modal
 .content-right {
     float: right;
     margin: 50px 20px 0 0;
 }
 
 
+.modal-title-container {
+   text-align: center;
+   border-bottom: 1px solid grey;
+   position: relative;
+   padding-bottom: 10px;
 
+   h3 {margin-bottom: 0;}
 
+   .modal-sub-header-a {
+       margin: 0 auto;
+       width: 70%;
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       font-size: .8em;
+       margin-bottom: 10px;
+       font-weight: bold;
+   }
 
+   #review-subtitle {
+       margin: 0 auto;
+       width: 70%;
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       font-size: .8em;
+       margin-bottom: 10px;
+       font-weight: bold;
 
+       &:hover {
+           text-decoration: none;
+       }
+   }
+}
+
+// Modal content
+.modal-body {
+   padding: 10px;
+   font-size: .8em;
+
+   .after-submit-container {
+       padding: 10px;
+
+       h3 {
+           margin: 0 auto;
+           text-align: center;
+       }
+   }
+
+   .modal-body-data {display: none;}
+
+   .modal-load-message {
+       margin-top: 10px;
+       text-align: center;
+   }
+}
+
+// "Rows" / Individual items to be populated in the modal
+.modal-item {
+   margin: 10px 0;
+   max-width: 100%;
+   overflow: hidden;
+
+   .vital-content {font-weight: bold;}
+
+   select {
+       width: 140px;
+   }
+
+   p {
+       display: inline-block;
+       margin: 0;
+       padding: 0;
+   }
+
+   a {
+      font-weight: bold;
+   }
+}
+
+// Divides sections in the modal
+.modal-body-border {
+   margin: 10px auto 10px;
+   width: 60%;
+   border-bottom: 1px solid grey;
+}
+
+// Modal buttons
+.modal-button-container {
+   margin-top: 5px;
+
+   .valid-button {
+       color: black;
+       padding: 10px;
+       border-radius: 1em;
+       box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+       border-width: 0;
+       float: left;
+       width: 45%;
+       margin: 2.5%;
+
+       &:hover {
+           background-color: white;
+           color: black;
+       }
+   }
+
+   .greyout-button {
+       background-color: white;
+       color: black;
+       padding: 10px;
+       border-radius: 1em;
+       box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+       border-width: 0;
+       float: left;
+       width: 45%;
+       margin: 2.5%;
+
+       &:hover {
+          cursor: not-allowed;
+
+       }
+   }
+}
 
 /* The Close Button */
 .close {
@@ -174,11 +169,10 @@
    font-size: 28px;
    font-weight: bold;
    margin-top: -30px;
-}
 
-.close:hover,
-.close:focus {
-   color: black;
-   text-decoration: none;
-   cursor: pointer;
+   &:hover, &:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+   }
 }

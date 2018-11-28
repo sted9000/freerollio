@@ -2,13 +2,13 @@
 .hamburger {
     background:none;
     position:absolute;
-    top:0;
-    right:0;
+    top:10px;
+    right:10px;
     line-height:45px;
     padding:5px 15px 0px 15px;
     color: black;
     border:0;
-    font-size:1.4em;
+    font-size:2em;
     font-weight:bold;
     cursor:pointer;
     outline:none;
@@ -24,12 +24,23 @@
     padding:7px 15px 0px 15px;
     color:black;
     border:0;
-    font-size:3em;
+    font-size:4em;
     line-height:65px;
     font-weight:bold;
     cursor:pointer;
     outline:none;
     z-index:1;
+}
+
+.lang-menu {
+    position:absolute;
+    top: 25px;
+    right: 70px;
+
+    .lang-select {
+        width: 80px;
+        border-radius: 2em;
+    }
 }
 
 .nav-menu {
@@ -39,8 +50,8 @@
     width:100%;
     background:#f5f5f5;
     position:absolute;
-    top: 0px;
-    right: 40px;
+    top: 50px;
+    right: 0px;
     width: 150px;
     text-align:center;
     display: none;

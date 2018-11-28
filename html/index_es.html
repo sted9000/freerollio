@@ -23,9 +23,9 @@
             <div class="overlay"></div>
             <div id="primary-container">
                 <div class="error-bar">
-                    <span class="error-label no-metamask-plugin">Please <a href="https://metamask.io">install the MetaMask plugin</a> to use freerollio then refresh the page.</span>
+                    <span class="error-label no-metamask-plugin">You need to <a href="https://metamask.io">install the MetaMask plugin</a> to use freerollio.</span>
                     <span class="error-label no-metamask-accounts">No accounts found. Please make sure MetaMask is unlocked then refresh the page.</span>
-                    <span class="error-label invalid-network">Invalid network. Please switch MetaMask to the Main Ethereum Network.</span>
+                    <span class="error-label invalid-network">Invalid network. Please switch MetaMask to the Main network.</span>
                 </div>
             </div>
 
@@ -37,26 +37,28 @@
                 <button class="cross" onclick="navButton()">&#735;</button>
                 <div class="nav-menu">
                     <ul>
-                        <a href="https://sted9000.github.io/openfreerollproject" target="_blank"><li>Other Projects</li></a>
-                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit#heading=h.ahvbxbismv5n" target="_blank"><li>Resources</li></a>
-                        <a href="https://tedslocum.com/about" target="_blank"><li>About</li></a>
-                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit#heading=h.v52xddk4vqhv" target="_blank"><li>Contact</li></a>
+                        <a href="https://freeroll.io/es" target="_blank"><li>Home</li></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing" target="_blank"><li>Projects</li></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing" target="_blank"><li>Blog</li></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing" target="_blank"><li>Resources</li></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing" target="_blank"><li>About</li></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing" target="_blank"><li>Contact</li></a>
                     </ul>
                 </div>
 
-                <!-- <div class="lang-menu">
+                <div class="lang-menu">
                     <select class="lang-select">
-                        <option value="english">English</option>
                         <option value="spanish">Español</option>
+                        <option value="english">English</option>
                     </select>
                 </div>
                 <script type="text/javascript">
                     $(".lang-select").change(function(){
                         if ($(this).val() == 'spanish') {
-                            window.location.href = 'https://freeroll.io/es';
+                            window.location.href = 'https://freeroll.io/';
                         }
                     });
-                </script> -->
+                </script>
 
                 <!-- Title, subtitle, and quote -->
                 <div id="title-container">
@@ -81,8 +83,8 @@
                             Create a freeroll by attaching money to a goal. Recover the money only if you complete the goal; otherwise the money is directed to a friend or charity.<br /></br>
                             Post a freeroll below and see how your motivation changes.</br>
                         </p>
-                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit" target="_blank"><button class="intro-button">Read More</button></a>
-                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit" target="_blank"><button class="intro-button" id="guide-button">Guide (coming soon)</button></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing"><button class="intro-button">Read More</button></a>
+                        <a href="https://docs.google.com/document/d/1KjZpuII925CJhYzMB9E7Wq4OfjD8odqNgFK2Z09V-sM/edit?usp=sharing"><button class="intro-button" id="guide-button">Guide (coming soon)</button></a>
                         <div class="clear-float-div"></div>
                     </div>
                     <script type="text/javascript">
@@ -91,7 +93,7 @@
                             if ($("#intro-button").text() == 'Short Introduction') {
                                 $("#intro-button").text("Close Introduction");
                             } else {
-                                $("#intro-button").text("Short Introduction");
+                                $("#intro-button").text('Short Introduction');
                             }
                         });
                     </script>
@@ -475,7 +477,7 @@
                          <p> at </p>
                          <p id="modal-expiration-time" class="vital-content"></p>
                      </span></div>
-                     <div class="modal-item"><span><p>Or forfeit the entire balance of:&nbsp;</p><p id="modal-value" class="vital-content"></p></span></div>
+                     <div class="modal-item"><span><p>Or forfit the entire balance of:&nbsp;</p><p id="modal-value" class="vital-content"></p></span></div>
                     <div class="modal-item"><span><p>To the freeroll receiver:&nbsp;</p><a id="modal-receiver" class="vital-content"></a></span></div>
                     <div class="modal-item"><span>
                         <p id="modal-location-avail-no" class="hidden">Freeroll poster has chosen not to publish his results.</p>
@@ -486,13 +488,13 @@
                      </span></div>
                     <div class="modal-body-border"></div>
                      <div class="modal-item"><span><p>Freeroll Deadline:&nbsp;</p>
-                         <p id="modal-deadline-expired" class="vital-content" style="display:none"> Expired</p>
-                         <p id="modal-deadline-active" class="vital-content" style="display:none"> Active</p>
+                         <p id="modal-deadline-expired" class="vital-content hidden"> Expired</p>
+                         <p id="modal-deadline-active" class="vital-content hidden"> Active</p>
                      </span></div>
                      <div class="modal-item"><span><p>Outcome:&nbsp;</p>
-                         <p id="modal-outcome-victory" class="vital-conten" style="display:none"> Victory Claimed</p>
-                         <p id="modal-outcome-unsuccessful" class="vital-content" style="display:none"> Unsuccessful</p>
-                         <p id="modal-outcome-tbd" class="vital-content" style="display:none"> TBD</p>
+                         <p id="modal-outcome-victory" class="vital-content hidden"> Victory Claimed</p>
+                         <p id="modal-outcome-unsuccessful" class="vital-content hidden"> Unsuccessful</p>
+                         <p id="modal-outcome-tbd" class="vital-content hidden"> TBD</p>
                      </span></div>
                      <div class="modal-item"><span><p>Unpaid Balance:&nbsp;</p><p id="modal-remaining-balance" class="vital-content"></p></span></div>
 
@@ -500,7 +502,7 @@
 
                     <div id="payout-success-cont" class="after-submit-container" style="display:none">
                         <h3 class="freeroll_submitted">Transaction Submitted</h3>
-                        <p>Your transaction has been submited to the blockchain. You can track it here with this <a id="payoutHash" href="" target="_blank"><b>transaction identifier</b></a> or in your MetaMask extension. Thanks you for using freerollio.</p>
+                        <p>Your transaction has been submited to the blockchain. You can track it here with this <a id="payoutHash" href=""><b>transaction identifier</b></a> or in your MetaMask extension. Thanks you for using freerollio.</p>
                     </div>
 
                     <div id="payout-reject-cont" class="after-submit-container" style="display:none">
@@ -549,10 +551,9 @@
 
                     <div class="modal-item"><span><p>Or the entire balance of the contract:&nbsp;</p><p id="review-amount" class="vital-content"></p></span></div>
                     <div class="modal-item"><span><p>Will transfer rights to the freeroll receiver you specified:&nbsp;</p><a id="review-receiver" class="vital-content"></a></span></div>
-                    <div class="modal-item" id="review-check-addr-mess" style="display:none"><span><p>Verify the address <a id="review-check-addr-link" href="" target="">here</a></p></span></div>
                     <div class="modal-item"><span>
-                        <p id="review-location-mess-no" style="display:none">You DO NOT intend to verify your results</p>
-                        <p id="review-location-mess-yes" style="display:none">You agree to verifiy your results at:</p>
+                        <p id="review-location-mess-no" class="hidden">You DO NOT intend to verify your results</p>
+                        <p id="review-location-mess-yes" class="hidden">You agree to verifiy your results at:</p>
                         <a id="review-location" class="vital-content"></a>
                     </span></div>
                     <div class="modal-item"><span><p>You agree to act in accordance to the system of:&nbsp;</p>
@@ -573,7 +574,7 @@
 
                     <div id="txHash-submitted-message" class="after-submit-container" style="display:none">
                         <h3 class="freeroll_submitted">Freeroll Submitted</h3>
-                        <p>Your Freeroll has been submitted to the blockchain. You can track it using this <a id="txHash" href="" target="_blank"><b>transaction identifier</b></a> or in your MetaMask extension. Once it is accepted you should see it appear with the other Community Freerolls. Good luck with your goal and be sure to claim victory before the deadline.</p>
+                        <p>Your Freeroll has been submitted to the blockchain. You can track it using this <a id="txHash" href=""><b>transaction identifier</b></a> or in your MetaMask extension. Once it is accepted you should see it appear with the other Community Freerolls. Good luck with your goal and be sure to claim victory before the deadline.</p>
                     </div>
 
                     <div id="txHash-rejected-message" class="after-submit-container" style="display:none">
@@ -623,6 +624,6 @@
 
     <!-- Footer ----------------------------------------------------------------------------------------------------------------------------->
     <footer>
-        <a href="http://www.tedslocum.com" target="_blank">&copy sted9000</a>
+        <a href="http://www.tedslocum.com">&copy sted9000</a>
     </footer>
 </body>

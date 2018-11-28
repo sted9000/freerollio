@@ -15,11 +15,15 @@ font-family: 'Merriweather', serif;
 }
 
 // Container for site content
-#content {margin-top: 50px;}
+#content {margin-top: 80px;}
 
 
 // Defaults ........................................
 .clear-float-div {clear: both;}
+
+.hidden {
+    display: none;
+}
 
 a, a:link, a:visited, a:focus, a:hover, a:active {
     color: inherit;
@@ -33,28 +37,37 @@ a, a:link, a:visited, a:focus, a:hover, a:active {
 
 button {
     font-family: 'Merriweather', serif;
+    background-color: buttonface;
     cursor: pointer;
     border-radius: 2em;
 }
 
-// Colors ..................................................
-$grey-btn: #d9d9d9;
+input, select {
+    border-width: 2px;
+    border-style: inset;
+    padding: 1px 0;
+    font: 400 13.3333px Arial;
+    background-color: white;
+    width: 283.500px;
+    border-color: grey;
+}
 
 
 // Mixins ....................................................
+
+
 @mixin tooltiptext {
     white-space: pre;
     font-size: .8em;
     visibility: hidden;
-    bottom: 105%;
     background-color: white;
     border-radius: 6px;
-    border-width: medium;
+    border-width: 1px;
     border-style: solid;
     border-color: black;
-    margin-left: 0px;
     padding: 10px;
     position: absolute; /* Position the tooltip ***Important***/
+    z-index: 1;
 }
 
 
