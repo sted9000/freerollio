@@ -29,11 +29,11 @@ var web3_amount_wei = null;
 var web3_duration_sec = null;
 var web3_location = null;
 var web3_category = null;
-
+console.log('here')
 
 // *** Blockchain search and Display Logic *************************************************************************************************************
 // *** Gets block and starts search (called after web3 checks)
-function fireUponPageLoad() {
+export function fireUponPageLoad() {
     console.log("Factory Address: " + factoryAddress); // Log
     web3.eth.getBlockNumber(function(err, block) { // Get last block
         console.log("Current Block Number: " + block); // Log
@@ -776,7 +776,7 @@ function populateModal() {
     // Show the modal
     $("#review-modal").show();
 
-    getEthPrice()
+    // getEthPrice()
 }
 
 
