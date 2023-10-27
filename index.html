@@ -11,14 +11,6 @@
 </head>
 
 <body>
-<!--    <button id="openModalBtn">Open Modal</button>-->
-
-<!--    <div id="myModal" class="modal">-->
-<!--        <div class="modal-content">-->
-<!--            <span id="closeModalBtn" class="close">&times;</span>-->
-<!--            <p>This is a simple modal!</p>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <!-- Divs to wrap content for sticky footer format -->
     <div class="content-outside">
@@ -40,7 +32,10 @@
                 <div id="title-container">
                     <div class="title-header-container">
                         <h1 id="header-title">freerollio</h1>
-                        <p id="signer"></p>
+                        <div>
+                            <div id="signer"></div>
+                            <div id="network"></div>
+                        </div>
                     </div>
                     <p>Freerolls are a way to keep yourself accountable by precommiting to a task and posting money that you will only get back if you accomplish the task on time.</p>
                     <p>Freerollio is freerolls on Ethereum.</p>
@@ -73,7 +68,7 @@
                     <span id="duration-error" class="receiver-error">Must be a number between 1 and 365</span>
                     <span id="duration-valid" class="receiver-valid">&#x2713;</span>
                 </div>
-                <div><button id="estimate-gas-button">Review</button></div>
+                <div><button id="review-button">Review</button></div>
 
                 <!-- Review Freeroll -->
                 <div id="review-container" class="review-container">
