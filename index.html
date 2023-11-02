@@ -16,30 +16,18 @@
     <div class="content-outside">
         <div class="content-inside">
 
-            <!-- Error message for MetaMask detection  -->
-<!--            <div class="overlay"></div>-->
-<!--            <div id="primary-container">-->
-<!--                <div class="error-bar">-->
-<!--                    <span class="error-label no-metamask-plugin">You need to <a href="https://metamask.io">install the MetaMask plugin</a> to use freerollio. </span>-->
-<!--                    <span class="error-label no-metamask-accounts">No accounts found. Please make sure MetaMask is unlocked then refresh the page.</span>-->
-<!--                    <span class="error-label invalid-network">Invalid network. Please switch MetaMask to the Main network.</span>-->
-<!--                </div>-->
-<!--            </div>-->
-
             <!-- Site header  ------------------------------------------------------------------------------------------------------->
             <header id="site-header">
                 <!-- Title, subtitle, and quote -->
-                <div id="title-container">
+                <div class="title-container">
                     <div class="title-header-container">
                         <h1 id="header-title">freerollio</h1>
-                        <div>
-                            <div id="signer"></div>
-                            <div id="network"></div>
+                        <div class="header-info">
+                            <div id="signer" class="signer-address"></div>
+                            <div id="network" class="network"></div>
                         </div>
                     </div>
-                    <p>Freerolls are a way to keep yourself accountable by precommiting to a task and posting money that you will only get back if you accomplish the task on time.</p>
-                    <p>Freerollio is freerolls on Ethereum.</p>
-                    <a href="https://www.example.com">Learn more here</a>
+                    <p class="general-info">Freerolls are bets for self motivation and accountability. They are a way to put your money where your mouth is. You can create a freeroll for any goal you want to achieve. If you achieve your goal, you get your money back. If you don't, your money goes to a charity of your choice. Freerollio is a decentralized application that allows you to create and participate in freerolls. It is built on the Ethereum blockchain and uses smart contracts to manage freerolls.</p>
                 </div>
             </header>
 
@@ -47,126 +35,86 @@
             <!-- Pages main content (intro, post, and search) ---------------------------------------------------------------------------------->
             <div id="content">
                 <!-- Post Freeroll  ---------------------------------------------------->
-                <h2>Create a Freeroll</h2>
-                <div>
-                    <input type="text" id="input-description" placeholder="Describe your goal">
-                    <span id="description-error" class="receiver-error">Max 140 Characters</span>
-                    <span id="description-valid" class="receiver-valid">&#x2713;</span>
-                </div>
-                <div>
-                    <input type="text" id="input-receiver" placeholder="Receiver's Ethereum Address">
-                    <span id="receiver-error" class="receiver-error">Invalid Address</span>
-                    <span id="receiver-valid" class="receiver-valid">&#x2713;</span>
-                </div>
-                <div>
-                    <input type="text" id="input-amount" placeholder="Amount in ETH">
-                    <span id="amount-error" class="receiver-error">Must be a number between .01 and 10</span>
-                    <span id="amount-valid" class="receiver-valid">&#x2713;</span>
-                </div>
-                <div>
-                    <input type="text" id="input-duration" placeholder="Duration in days">
-                    <span id="duration-error" class="receiver-error">Must be a number between 1 and 365</span>
-                    <span id="duration-valid" class="receiver-valid">&#x2713;</span>
-                </div>
-                <div><button id="review-button">Review</button></div>
-
-                <!-- Review Freeroll -->
-                <div id="review-container" class="review-container">
-                    <div>
-                        <span id="gas-estimate-label">Gas Estimate</span>
-                        <span id="gas-estimate-gwei"></span>
-                        <span> Gwei (</span>
-                        <span id="gas-estimate-usd"></span>
-                        <span> USD)</span>
+                <div class="section">
+                    <h2>Create a Freeroll</h2>
+                    <div class="freeroll-input-container">
+                        <input type="text" id="input-description" class="freeroll-input" placeholder="Describe your goal in 140 characters or less">
+                        <span id="description-error" class="receiver-error">Max 140 Characters</span>
+                        <span id="description-valid" class="receiver-valid">&#x2713;</span>
                     </div>
-
-                    <div>
-                        <span id="total-cost-label">Total Cost</span>
-                        <span id="total-cost-eth"></span>
-                        <span> ETH (</span>
-                        <span id="total-cost-usd"></span>
-                        <span> USD)</span>
+                    <div class="freeroll-input-container">
+                        <input type="text" id="input-receiver" class="freeroll-input" placeholder="Enter the Charity's Ethereum Address">
+                        <span id="receiver-error" class="receiver-error">Invalid Address</span>
+                        <span id="receiver-valid" class="receiver-valid">&#x2713;</span>
                     </div>
-
-                    <div>
-                        <input type="checkbox" id="double-check">
-                        <label for="double-check">I know what I'm doing</label>
+                    <div class="freeroll-input-container">
+                        <input type="text" id="input-amount" class="freeroll-input" placeholder="The amount of ETH you want to wager">
+                        <span id="amount-error" class="receiver-error">Must be a number between .01 and 10</span>
+                        <span id="amount-valid" class="receiver-valid">&#x2713;</span>
                     </div>
-                    <button id="clear-review">Clear</button>
-                    <button id="submit-freeroll" disabled>Submit Freeroll</button>
+                    <div class="freeroll-input-container">
+                        <input type="text" id="input-duration" class="freeroll-input" placeholder="Number of days you have to complete your goal">
+                        <span id="duration-error" class="receiver-error">Must be a number between 1 and 365</span>
+                        <span id="duration-valid" class="receiver-valid">&#x2713;</span>
+                    </div>
+                    <div class="freeroll-input-container"><button id="review-button">Review Freeroll</button></div>
 
+                    <!-- Review Freeroll -->
+                    <div id="review-container" class="review-container">
+                        <div>
+                            <h3 id="review-description-label">Please review the following before submitting</h3>
+                        </div>
+                        <div id="review-content-container">
+                            <div class="review-item">
+                                <span id="gas-estimate-label">Gas Estimate: </span>
+                                <span id="gas-estimate-gwei"></span>
+                                <span> Gwei (</span>
+                                <span id="gas-estimate-usd"></span>
+                                <span> USD)</span>
+                                <span class="small-link"><a href="https://www.britannica.com/money/ethereum-gas-fees-eth" target="_blank">What is gas?</a></span>
+                            </div>
+
+                            <div class="review-item">
+                                <span id="total-cost-label">Total Cost: </span>
+                                <span id="total-cost-eth"></span>
+                                <span> ETH (</span>
+                                <span id="total-cost-usd"></span>
+                                <span> USD)</span>
+                            </div>
+                            <div class="review-item">
+                                <span id="description-label">Description: </span>
+                                <span id="review-description">To get this money back you must claim victory before </span>
+                                <span id="end-date"></span>
+                            </div>
+                        </div>
+                        <div class="review-button-container">
+                            <button id="clear-review">Clear</button>
+                            <button id="submit-freeroll">Submit</button>
+                        </div>
+
+                    </div>
+                    <!-- End Post Freeroll -->
                 </div>
-                <!-- End Post Freeroll -->
+
 
                 <!-- Community Freerolls  ---------------------------------------------------->
-                <h2>Community Freerolls</h2>
-                <div id="query-results"></div>
-                <div id="searching-blockchain"> <!-- Shown by default -->
-                    <p>Scanning the Ethereum blockchain for freerolls...</p>
-                    <div class="spinner"></div>
+                <div class="section">
+                    <h2>Community Freerolls</h2>
+                    <div id="query-results"></div>
                 </div>
+
 
             </div> <!-- End content -->
         </div> <!-- End content-inside -->
     </div> <!-- End content-outside -->
 
 
-    <!-- Modals ----------------------------------------------------------------------------------------------------->
-
-<!--     &lt;!&ndash; Details Modal -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-<!--    <div id="details-modal" class="modal">-->
-
-<!--        &lt;!&ndash; Modal content &ndash;&gt;-->
-<!--        <div class="modal-content content-left">-->
-<!--            <div class="modal-title">-->
-<!--                <span onClick="closeModal()" class="close">&times;</span>-->
-<!--                <h3>Freeroll Contract</h3>-->
-<!--                <div class="details-address-container">-->
-<!--                    <a id="details-sub-header" class="modal-sub-header-a" href=""></a>-->
-<!--                </div>-->
-
-
-<!--            </div>-->
-
-<!--            <div class="modal-body">-->
-<!--                <div id="details-load-message" class="load-message">-->
-<!--                    <p>Searching Blockchain for Contract Details ...</p>-->
-<!--                    <div class="spinner"></div>-->
-<!--                </div>-->
-<!--                <div id="details-body-data" class="modal-body-data">-->
-<!--                    <div class="modal-item"><span><p>Freeroll poster:&nbsp;</p><a id="modal-poster"></a></span></div>-->
-<!--                     <div class="modal-item"><span><p>Stated on:&nbsp;</p><p id="modal-dateposted" class="vital-content"></p></span></div>-->
-<!--                     <div class="modal-item"><span><p>That he must accomplish:&nbsp;</p><p id="modal-description" class="vital-content"></p></span></div>-->
-<!--                     <div class="modal-item"><span><p>Within:&nbsp;</p><p id="modal-duration" class="vital-content"></p></span></div>-->
-<!--                     <div class="modal-item"><span><p>And by no later than:&nbsp;</p><p id="modal-expiration" class="vital-content"></p></span></div>-->
-<!--                     <div class="modal-item"><span><p>Or forfit the entire balance of:&nbsp;</p><p id="modal-value" class="vital-content"></p></span></div>-->
-<!--                    <div class="modal-item"><span><p>To the freeroll receiver:&nbsp;</p><a id="modal-receiver" class="vital-content"></a></span></div>-->
-<!--                    <div class="modal-item"><span><p id="modal-location-avail"></p><a id="modal-location" class="vital-content"></a></span></div>-->
-<!--                     <div class="modal-item"><span><p>The poster has agreed to act in accordance to the system of:&nbsp;</p><p id="modal-trust" class="vital-content"></p></span></div>-->
-<!--                    <div class="modal-body-border"></div>-->
-<!--                     <div class="modal-item"><span><p>Freeroll Deadline:&nbsp;</p><p id="modal-deadline" class="vital-content"></p></span></div>-->
-<!--                     <div class="modal-item"><span><p>Outcome:&nbsp;</p><p id="modal-outcome" class="vital-content"></p></span></div>-->
-<!--                     <div class="modal-item"><span><p>Unpaid Balance:&nbsp;</p><p id="modal-remaining-balance" class="vital-content"></p></span></div>-->
-<!--                    <div class="modal-body-border"></div>-->
-
-<!--                    <div class="modal-button-container">-->
-<!--                        <button id="claim-victory" class="valid-button"onClick="claimVictory()">Claim Victory</button>-->
-<!--                        <button id="claim-victory-grey" class="greyout-button">Claim Victory</button>-->
-<!--                        <button id="payout" class="valid-button" onClick="payoutFreeroll()">Payout</button>-->
-<!--                        <button id="payout-grey" class="greyout-button">Payout</button>-->
-<!--                        <div class="clear-float-div"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div> &lt;!&ndash; End details modal &ndash;&gt;-->
-
-
-
-
     <!-- Footer ----------------------------------------------------------------------------------------------------------------------------->
     <footer>
-        <a href="http://www.tedslocum.com">&copy sted9000</a>
+        <!-- Links to GitHub repo and my personal site. The links should be images of the GitHub and personal site logos. -->
+        <div id="footer-links">
+            <a href="https://github.com/sted9000/freerollio"><img src="/images/github-logo.png" alt="GitHub Repo"></a>
+        </div>
+
     </footer>
 </body>

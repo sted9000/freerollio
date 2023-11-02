@@ -271,11 +271,52 @@ async function setNetworkValues(chainId) {
         title.className = "freeroll-title";
         title.innerHTML = events[i].args._description;
         div.appendChild(title);
+
+        // create p for each event with the amount + ether symbol + the date of the event
+        let details = document.createElement("p");
+        details.className = "freeroll-details";
+
+        let amount = document.createElement("span");
+        amount.className = "freeroll-detail-item";
+        amount.innerHTML = ethers.formatEther(events[i].args._value) + ' ETH posted by ';
+
+        let poster = document.createElement("a");
+        poster.className = "freeroll-detail-item";
+        poster.href = 'https://goerli.etherscan.io/address/' + events[i].args._poster;
+        poster.innerHTML = events[i].args._poster.slice(0, 6) + '...' + events[i].args._poster.slice(-4);
+
+        let block_number_text = document.createElement("span");
+        block_number_text.className = "freeroll-detail-item";
+        block_number_text.innerHTML = ' on block #: ';
+
+        let block_number = document.createElement("a");
+        block_number.className = "freeroll-detail-item";
+        block_number.href = 'https://goerli.etherscan.io/block/' + events[i].blockNumber;
+        block_number.innerHTML = events[i].blockNumber;
+
+
+        details.appendChild(amount);
+        details.appendChild(poster);
+        details.appendChild(block_number_text);
+        details.appendChild(block_number);
+        div.appendChild(details);
+
+        // if the user is the poster, add a "Claim" button
+        let isPoster = events[i].args._poster === address;
+        if (isPoster) {
+            let claim = document.createElement("button");
+            claim.className = "second-button";
+            claim.innerHTML = "Claim";
+            claim.onclick = claimFreeroll;
+            div.appendChild(claim);
+        }
         // create "See More" button
         let button = document.createElement("button");
-        button.className = "freeroll-button";
+        button.className = isPoster ? "first-button" : "second-button";
         button.innerHTML = "Details";
+        button.onclick = showDetails;
         div.appendChild(button);
+
         // add to page
         document.getElementById("query-results").appendChild(div);
     }
@@ -376,6 +417,9 @@ document.getElementById("review-button").addEventListener("click", async functio
     } else if (amount === "0" || amount.length === 0) {
         alert("Please enter a valid amount.");
         return;
+    } else if (duration === "0" || duration.length === 0) {
+        alert("Please enter a valid duration.");
+        return;
     }
 
     // format inputs
@@ -414,6 +458,9 @@ document.getElementById("review-button").addEventListener("click", async functio
     // total cost in usd
     let totalUsd = totalEth * ethPrice;
 
+    // end date of the freeroll in unix time
+    let endDate = Math.floor(Date.now() / 1000) + duration;
+
     // update dom
     document.getElementById("input-description").disabled = true;  // disable inputs
     document.getElementById("input-receiver").disabled = true;
@@ -424,13 +471,18 @@ document.getElementById("review-button").addEventListener("click", async functio
     document.getElementById("gas-estimate-usd").innerHTML = gasEstimateUsd.toFixed(2);  // populate gas-estimate-usd
     document.getElementById("total-cost-eth").innerHTML = totalEth.toString();  // populate total-cost
     document.getElementById("total-cost-usd").innerHTML = totalUsd.toFixed(2);  // populate total-cost-usd
+    // end date in format of 1/1/2021 12:00 AM (do not include seconds)
+    document.getElementById("end-date").innerHTML = new Date(endDate * 1000).toLocaleString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric'
+    }) + ' ' + new Date(endDate * 1000).toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    });
     document.getElementById("review-container").style.display = 'block';  // show review-container
 
-});
-
-// double-check checkbox
-document.getElementById("double-check").addEventListener("change", function () {
-    document.getElementById("submit-freeroll").disabled = !this.checked;
 });
 
 // clear-review button
@@ -439,8 +491,6 @@ document.getElementById("clear-review").addEventListener("click", function () {
     document.getElementById("input-receiver").disabled = false;
     document.getElementById("input-amount").disabled = false;
     document.getElementById("input-duration").disabled = false;
-    document.getElementById("double-check").checked = false;  // reset double-check checkbox
-    document.getElementById("submit-freeroll").disabled = true;  // disable submit-freeroll button
     document.getElementById("review-button").style.display = 'block';  // show button
     document.getElementById("review-container").style.display = 'none';  // hide review-container
 });
@@ -490,6 +540,20 @@ document.getElementById("submit-freeroll").addEventListener("click", async funct
 
 });
 
+// details button
+function showDetails() {
+    // take to etherscan goerli block explorer
+    window.open('https://goerli.etherscan.io/address/' + this.parentNode.id);
+}
+
+// claim button
+async function claimFreeroll() {
+    // get freeroll contract
+    const freeroll = new ethers.Contract(this.parentNode.id, freerollAbi, signer);
+    // send transaction to claim
+    let txResponse = await freeroll.posterWon();
+    console.log('txResponse: ', txResponse);
+}
 
 // Deploy a factory contract
 // const factoryBytecode = '608060405234801561001057600080fd5b506040516020806108ee8339810180604052810190808051906020019092919050505080600081905550506108a48061004a6000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680631f1b88eb1461005157806354fd4d5014610173575b600080fd5b610131600480360381019080803590602001908201803590602001908080601f0160208091040260200160405190810160405280939291908181526020018383808284378201915050505050509192919290803573ffffffffffffffffffffffffffffffffffffffff1690602001909291908035151590602001909291908035906020019092919080359060200190929190803590602001908201803590602001908080601f016020809104026020016040519081016040528093929190818152602001838380828437820191505050505050919291929050505061019e565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561017f57600080fd5b506101886103c3565b6040518082815260200191505060405180910390f35b600080343388866101ad6103c9565b808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182815260200193505050506040518091039082f080158015610238573d6000803e3d6000fd5b50905090503373ffffffffffffffffffffffffffffffffffffffff167fe16428eac31f206693d493c365b22c76050fd554e8ca4c2dda8ffa3856d494d489348989888a88604051808060200188815260200187151515158152602001868152602001806020018581526020018473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200183810383528a818151815260200191508051906020019080838360005b8381101561030e5780820151818401526020810190506102f3565b50505050905090810190601f16801561033b5780820380516001836020036101000a031916815260200191505b50838103825286818151815260200191508051906020019080838360005b83811015610374578082015181840152602081019050610359565b50505050905090810190601f1680156103a15780820380516001836020036101000a031916815260200191505b50995050505050505050505060405180910390a2809150509695505050505050565b60005481565b60405161049f806103da833901905600608060405260405160608061049f833981018060405281019080805190602001909291908051906020019092919080519060200190929190505050826000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555081600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506100db42826100e964010000000002610343179091906401000000009004565b600281905550505050610105565b600081830190508281101515156100fc57fe5b80905092915050565b61038b806101146000396000f30060806040526004361061006d576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806333bbae931461006f578063809597211461009a57806399d26f3e146100f1578063cdfa750314610108578063f7260d3e1461011f575b005b34801561007b57600080fd5b50610084610176565b6040518082815260200191505060405180910390f35b3480156100a657600080fd5b506100af61017c565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156100fd57600080fd5b506101066101a1565b005b34801561011457600080fd5b5061011d610266565b005b34801561012b57600080fd5b50610134610304565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60025481565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156101fc57600080fd5b600254421115151561020d57600080fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc3073ffffffffffffffffffffffffffffffffffffffff16319081150290604051600060405180830381858888f19350505050151561026457600080fd5b565b6002544211151561027657600080fd5b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6102dd60013073ffffffffffffffffffffffffffffffffffffffff163161032a90919063ffffffff16565b9081150290604051600060405180830381858888f19350505050151561030257600080fd5b565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600082821115151561033857fe5b818303905092915050565b6000818301905082811015151561035657fe5b809050929150505600a165627a7a72305820bcee687fd8c65f6fe499dd91bb93d9bab7c6a72a595251a89ef50eb27b2620f10029a165627a7a72305820bf685bad577269853aeeba050c142ea0b17222793eb14a70beca5d8daa8b00960029';
