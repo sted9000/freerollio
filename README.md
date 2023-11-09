@@ -28,5 +28,7 @@ Currently, you need to have a metamask account and browser extension (visit the 
 
 ## Todo
 - [ ] Clean up repo
+- [ ] Fix community freeroll links
 - [ ] Update README
 - [ ] Add clarifying ui elements
+- [ ] Debug mainnet gas prices inaccuracy
