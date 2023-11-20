@@ -1,34 +1,54 @@
 # freerollio
-## General Info
-Freerolls are bets for self motivation and accountability. They are a way to put your money where your mouth is. You can create a freeroll for any goal you want to achieve. If you achieve your goal, you get your money back. If you don't, your money goes to a charity of your choice.
+[Freerollio.xyz](https://freerollio.xyz) is a dApp for motivation and accountability.
 
-Freerollio is a decentralized application that allows you to create and participate in freerolls. It is built on the Ethereum blockchain and uses smart contracts to manage freerolls.
+## Freerolls
+A freeroll is a type of wager for motivation or accountability. "I will give you $10 if I don't exercise this week." is the simplest example of a freeroll. The technical term for this type of wager is a [pre-commitment device](https://en.wikipedia.org/wiki/Precommitment). Committing to something ahead of time provides a tangible motivation and limits your ability to back-out or change your mind -- both helpful for achieving your goals.
 
-## Usage
-Currently, you need to have a metamask account and browser extension (visit the extension store in your browser and search MetaMask). Two freeroll factory contracts are deployed: One on the ethereum main chain and one on the Goerli test chain. You can use the Goerli test chain to test out the application. You can get test ether from the [Goerli faucet](https://goerlifaucet.com/). 
+If you fail to achieve your goal, your money is donated to a charity you selected. If you achieve your goal, you get your money back. 
+
+Freerolls are widely used in the poker community. Poker players are notoriously unmotivated by anything other than money and reputation. So freerolls are a great way to motivate them to do things they otherwise wouldn't do. For example, a poker player might make a freeroll with his friend to motivate himself to exercise more. If he fails, he has to hand over money to his friend (Errr!).
+
+## Freerollio.xyz
+Freerollio.xyz is a dApp that allows you to create and participate in freerolls. It is built on the Ethereum blockchain and uses smart contracts to manage freerolls.
+
+### Usage
+Currently, you need to have a metamask wallet -- a browser extension. You can participate with real ether or with test ether on the Goerli Testnet. 
 
 ### Creating a Freeroll
-1. Go to the [freerollio site](https://freerollio.netlify.app/).
-2. Make sure you are connected to the correct blockchain in metamask.
-3. Enter the details of your freeroll
-4. Click "Review Freeroll"
-5. Review the details of your freeroll
-6. Click "Create Freeroll"
-7. Confirm the transaction in metamask
-8. Wait for the transaction to be mined
+1. Enter the details of your freeroll
+1. Review the details of your freeroll
+1. Click "Submit Freeroll"
+1. Confirm the transaction in the metamask extension
 
 ### Claiming Victory in a Freeroll
-1. Go to the [freerollio site](https://freerollio.netlify.app/).
-2. Make sure you are connected to the correct blockchain in metamask.
-3. Click "Details" of your freeroll
-4. Click "Claim Victory"
-5. Confirm the transaction in metamask
-6. Wait for the transaction to be mined
-7. You should now have your money back
+1. Before the deadline of your freeroll, click the "Claim Victory" button of your freeroll
+1. Confirm the transaction in metamask
+1. Wait for the transaction to be mined
+1. You should now have your money back
+
+### Collecting Your Winnings as a Charity
+1. Click the "Collect Winnings" button of your freeroll
+2. Confirm the transaction in metamask
+3. Wait for the transaction to be mined
+4. You should now have your winnings
+
+---
+All interactions with a freerollio contract requires a fee -- called gas. This fee is paid to secure and run the blockchain. 
+
+Interactions with the freerollio contract take a few seconds to be processed by the blockchain.
+
+---
+## Contracts
+- [Mainnet](https://etherscan.io/address/0x451b453E8B8450366F8d309Db8B36E76Ee17177D)
+- [Goerli Testnet](https://goerli.etherscan.io/address/0xf08e6Df9fE14a7482CbF78c80dc719C31fdB8D71)
+
+## Resources
+- [Web site](https://freerollio.xyz)
+- [Goerli Test ETH](https://goerlifaucet.com/)
+- Freeroll Factory and Freeroll contracts are in the `contracts` directory
 
 ## Todo
-- [ ] Clean up repo
-- [ ] Fix community freeroll links
-- [ ] Update README
-- [ ] Add clarifying ui elements
-- [ ] Debug mainnet gas prices inaccuracy
+- [ ] Refactors with JS Framework
+- [ ] Add gas price to UI element
+- [ ] Revamp and add clarifying UI elements
+- [ ] Make accessible (readonly) without metamask
