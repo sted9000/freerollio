@@ -541,9 +541,15 @@ document.getElementById("submit-freeroll").addEventListener("click", async funct
 });
 
 // details button
-function showDetails() {
-    // take to etherscan goerli block explorer
-    window.open('https://goerli.etherscan.io/address/' + this.parentNode.id);
+async function showDetails() {
+    // get the current network
+    let network = await provider.getNetwork();
+    // if is the mainnet network take to etherscan mainnet block explorer
+    if (network.name === 'mainnet') {
+        window.open('https://etherscan.io/address/' + this.parentNode.id);
+    } else if (network.name === 'goerli') {
+        window.open('https://goerli.etherscan.io/address/' + this.parentNode.id);
+    }
 }
 
 // claim button
