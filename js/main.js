@@ -282,7 +282,8 @@ async function setNetworkValues(chainId) {
 
         let poster = document.createElement("a");
         poster.className = "freeroll-detail-item";
-        poster.href = 'https://goerli.etherscan.io/address/' + events[i].args._poster;
+        poster.href = "javascript:void(0);"
+        poster.onclick = showPosterDetails.bind(this, events[i].args._poster)
         poster.innerHTML = events[i].args._poster.slice(0, 6) + '...' + events[i].args._poster.slice(-4);
 
         let block_number_text = document.createElement("span");
@@ -291,7 +292,8 @@ async function setNetworkValues(chainId) {
 
         let block_number = document.createElement("a");
         block_number.className = "freeroll-detail-item";
-        block_number.href = 'https://goerli.etherscan.io/block/' + events[i].blockNumber;
+        block_number.href = "javascript:void(0);"
+        block_number.onclick = showBlockDetails
         block_number.innerHTML = events[i].blockNumber;
 
 
@@ -542,7 +544,6 @@ document.getElementById("submit-freeroll").addEventListener("click", async funct
 
 // details button
 async function showDetails() {
-    // get the current network
     let network = await provider.getNetwork();
     // if is the mainnet network take to etherscan mainnet block explorer
     if (network.name === 'mainnet') {
@@ -552,6 +553,25 @@ async function showDetails() {
     }
 }
 
+async function showBlockDetails() {
+    let network = await provider.getNetwork();
+    // if is the mainnet network take to etherscan mainnet block explorer
+    if (network.name === 'mainnet') {
+        window.open('https://etherscan.io/block/' + this.innerHTML);
+    } else if (network.name === 'goerli') {
+        window.open('https://goerli.etherscan.io/block/' + this.innerHTML);
+    }
+}
+
+async function showPosterDetails(poster) {
+    let network = await provider.getNetwork();
+    // if is the mainnet network take to etherscan mainnet block explorer
+    if (network.name === 'mainnet') {
+        window.open('https://etherscan.io/address/' + poster);
+    } else if (network.name === 'goerli') {
+        window.open('https://goerli.etherscan.io/address/' + poster);
+    }
+}
 // claim button
 async function claimFreeroll() {
     // get freeroll contract
